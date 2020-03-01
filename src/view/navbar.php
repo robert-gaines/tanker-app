@@ -10,11 +10,17 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="../../style/custom/custom.css">
     <style>
 
         img
         {
             border-radius: 2px;
+        }
+
+        .dropdown-menu
+        {
+          background-color: lightgray;
         }
 
     </style>
@@ -29,16 +35,31 @@
    <li class="nav-item">
     <a class="nav-link" href="#">Home</a>
    </li>
-   <li class="nav-item">
-    <a class="nav-link" href="#">Mission Data</a>
+   <li class="nav-item dropdown">
+    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown">Query</a>
+    <div class="dropdown-menu">
+      <a class="dropdown-item" href="#">Mission Data</a>
+      <a class="dropdown-item" href="#">Boom Operators</a>
+      <a class="dropdown-item" href="#">WRDCO</a>
+    </div>
    </li>
-   <li class="nav-item">
-    <a class="nav-link" href="#">Query</a>
+   <li class="nav-item dropdown">
+    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown">Export</a>
+    <div class="dropdown-menu">
+      <a class="dropdown-item" href="#">Boom Operators</a>
+      <a class="dropdown-item" href="#">WRDCO Data</a>
+      <a class="dropdown-item" href="#">Mission Data</a>
+    </div>
    </li>
-   <li class="nav-item">
-    <a class="nav-link" href="#">Export</a>
+   <li class="nav-item dropdown">
+    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown">Identity</a>
+    <div class="dropdown-menu">
+      <a class="dropdown-item" href="#">Add User</a>
+      <a class="dropdown-item" href="#">Query User</a>
+      <a class="dropdown-item" href="#">Edit/Remove User</a>
+    </div>
    </li>
-   <li class="nav-item">
+   <li class="nav-item dropdown">
     <a class="nav-link" href="logout.php">Logout</a>
    </li>
     </ul>
