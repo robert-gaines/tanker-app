@@ -11,7 +11,19 @@
   <link rel="stylesheet" href="../../style/custom/custom.css">
   <link rel="stylesheet" href="../../style/custom/dynamic_form.css">
   <?php  include('../view/navbar.php')  ?>
+  <?php include('../../db/dbconnect.php') ?>
   <style media="screen">
+
+  body
+  {
+    background-color: #333;
+  }
+
+  .custom-container
+  {
+    margin: 0 auto;
+    width: 1500px;
+  }
 
   .container-dynamic
   {
@@ -19,27 +31,13 @@
     padding-top:10px;
     padding-left: 10px;
     padding-bottom: 10px;
-    height: 100%;
-  }
-
-  .container-static
-  {
-    width: 0 auto;
-  }
-
-  .dyn-field
-  {
-    padding-bottom: 5px;
-  }
-
-  #inline-field
-  {
-    margin: 5px 5px 5px 5px;
   }
 
   .form-title
   {
     background-color: lightgray;
+    width: auto;
+    margin-bottom: 20px;
   }
 
   .form-inline
@@ -56,53 +54,94 @@
 
   th
   {
-    margin: 0 auto;
-    width: 10px;
     font-size: 12px;
   }
 
   table
   {
     border-collapse: collapse;
-    width: 100%;
+    /* width: 1800px; */
   }
 
-  .form-custom
+  td
   {
-    width: auto;
+    width: 50px;
   }
 
   </style>
 
 </head>
+  <!--
+    Variable Names:
+    --------------
+    host_tail_number
+    host_unit
+    home_station
+    host_command
+    boom_operator
+    transaction_date
+    julian_date
+    fuel_type
+
+    Dynamic Arrays
+    --------------
+    Jettison
+    Branch
+    tail_criteria
+    tail_number
+    acft_type
+    unit
+    dodaac
+    command
+    callsign
+    lbs
+    gallons
+    foreign
+    -->
+<?php
+  $tail_number_query = "SELECT TAILNUMBER FROM acft_data";
+  $tx_tn_query = mysqli_query($conn,$tail_number_query);
+  $unit_query = "SELECT UNIT FROM acft_data";
+  $tx_unit_query = mysqli_query($conn,$unit_query);
+ ?>
 
 <body>
-  <div class="container">
-    <div class="form-title">
-      <hr>
-      <h6>&nbsp Mission Data</h6>
-      <hr>
-    </div>
-   <form class="form-inline mx-auto" action="index.html" method="post">
+  <div class="custom-container">
+   <form class="form-inline" action="#" method="post">
      <div class="container-static">
+       <br>
+       <h6 style="margin-left: 10px;">Mission Data</h6>
+       <hr>
        <div class="form-inline form-custom" style="float: left;">
-         <select class="form-control-sm mb-2" name="tailnumber">
+         <select class="form-control-sm mb-2" name="host_tail_number">
            <option value="" disabled selected hidden> Tail # </option>
-           <option value=""><?php echo "TEST" ?></option>
-           <option value=""><?php echo "TEST" ?></option>
-           <option value=""><?php echo "TEST" ?></option>
+           <?php
+             while($row = mysqli_fetch_assoc($tx_tn_query))
+             {
+               foreach($row as $entry => $value)
+               {
+                 echo "<option value='{$value}'>$value</option>";
+               }
+             }
+            ?>
          </select>
        </div>
        <div class="form-inline" style="float: left;">
-         <select class="form-control-sm mb-2 text-center" name="unit">
+         <select class="form-control-sm mb-2 text-center" name="host_unit">
            <option value="" disabled selected hidden>  Unit  </option>
-           <option value=""><?php echo "TEST"; ?></option>
-           <option value=""><?php echo "TEST" ?></option>
-           <option value=""><?php echo "TEST" ?></option>
+           <?php
+             while($row = mysqli_fetch_assoc($tx_unit_query))
+             {
+               foreach($row as $entry => $value)
+               {
+                 echo "<option value='{$value}'>$value</option>";
+               }
+             }
+            ?>
          </select>
        </div>
      <div class="form-inline" style="float: left;">
-       <select class="form-control-sm mb-2" name="unitnumber">
+       <select class="form-control-sm mb-2" name="home_station">
          <option value="" disabled selected hidden>  Home Station  </option>
          <option value=""><?php echo "TEST"; ?></option>
          <option value=""><?php echo "TEST" ?></option>
@@ -110,7 +149,7 @@
        </select>
      </div>
    <div class="form-inline" style="float: left;">
-     <select class="form-control-sm mb-2" name="unitnumber">
+     <select class="form-control-sm mb-2" name="host_command">
        <option value="" disabled selected hidden>  Command  </option>
        <option value=""><?php echo "TEST"; ?></option>
        <option value=""><?php echo "TEST" ?></option>
@@ -122,7 +161,7 @@
      <input class="form-control-sm text-center" type="text" name="mission_number" value="" placeholder="Mission #">
    </div>
    <div class="form-inline" style="float: left;">
-    <select class="form-control-sm mb-2" name="unitnumber">
+    <select class="form-control-sm mb-2" name="boom_operator">
      <option value="" disabled selected hidden>  Boom Operator  </option>
      <option value=""><?php echo "TEST"; ?></option>
      <option value=""><?php echo "TEST" ?></option>
@@ -135,57 +174,137 @@
    <div class="form-inline" style="float: left;">
     <input class="form-control-sm text-center" type="text" name="julian_date" value="" placeholder="Julian Date">
    </div>
+   <div class="form-inline" style="float: left;">
+    <select class="form-control-sm mb-2" name="fuel_type">
+     <option value="" disabled selected hidden>  Fuel Type  </option>
+     <option value=""><?php echo "TEST"; ?></option>
+     <option value=""><?php echo "TEST" ?></option>
+     <option value=""><?php echo "TEST" ?></option>
+    </select>
+   </div>
   </div>
-  <div class="container">
-  </div>
-  <div class="form-title">
-   <h6>&nbsp Transaction Data</h6>
-   <br>
-   <table class="table-responsive mx-auto">
-     <thead class="w-25">
-       <tr class="w-25">
-         <th class="w-25"></th>
-         <th class="w-25">Jettison</th>
-         <th class="w-25"></th> &nbsp
-         <th class="w-25">Branch</th>
-         <th class="w-25"></th> &nbsp
-         <th class="w-25">Tail Number Criteria</th>
-         <th class="w-25"></th> &nbsp
-         <th class="w-25">Tail Number</th>
-         <th class="w-25"></th> &nbsp
-         <th class="w-25">Aircraft Type</th>
-         <th class="w-25"></th>
-         <th class="w-25">Unit</th>
-         <th class="w-25"></th>
-         <th class="w-25">DODAAC</th>
-         <th class="w-25"></th>
-         <th class="w-25">Command</th>
-         <th class="w-25"></th>
-         <th class="w-25">Callsign</th>
-         <th class="w-25"></th>
-         <th class="w-25">Pounds Delivered</th>
-         <th class="w-25"></th>
-         <th class="w-25">Gallons</th>
-         <th class="w-25"></th>
-         <th class="w-25">FMS/FRG Country</th>
+  <br><br><br>
+   <div class="container-dynamic" style="float: left;">
+     <div class="form-title">
+       <h6>&nbsp Transaction Data</h6>
+       <hr>
+     </div>
+    <table class="table-responsive mx-auto">
+     <thead>
+       <tr>
+         <button class="add_form_field btn btn-primary"> + <span style="font-size:16px; font-weight:bold; "> </span> <!-- </button> <input type="text" name="mytext[]"> -->
        </tr>
-     </thead>
-     <tbody>
+       <tr>
+         <th class="text-left">Jettison</th>
+         <th></th>
+         <th class="text-left"></th>
+         <th>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</th>
+         <th class="text-center"></th>
+         <th>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</th>
+         <th class="text-left"></th>
+         <th>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</th>
+         <th class="text-left"></th>
+         <th>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</th>
+         <th class="text-left"></th>
+         <th>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</th>
+         <th class="text-left"></th>
+         <th>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</th>
+         <th class="text-left"></th>
+         <th>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</th>
+         <th class="text-left"></th>
+         <th>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</th>
+         <th class="text-left"></th>
+         <th>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</th>
+         <th class="text-left"></th>
+         <th>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</th>
+         <th class="text-left"></th>
+         <th></th>
+       </tr>
+      </thead>
+      <tbody>
      </tbody>
-     </table>
-       <div class="container-dynamic" style="float: left;">
-         <button class="add_form_field btn btn-primary"> + <span style="font-size:16px; font-weight:bold;"> </span> <!-- </button> <input type="text" name="mytext[]"> -->
-       </div>
-       <br>
+    </table>
+   </div>
+   <br><br><br>
+   <div class="container mx-auto text-center" style="margin-top: 150px; background-color:lightgray;">
+     <button type="reset" class="btn btn-danger col-sm-3"> Reset </button>
+     <br><br>
+     <button type="submit" class="btn btn-primary col-sm-3" name="login">Submit</button>
    </div>
   </form>
+ </div>
 </body>
 
 </html>
 
 <?php
 
+  /*
+  Variable Names:
+  --------------
+  host_tail_number
+  host_unit
+  home_station
+  host_command
+  boom_operator
+  transaction_date
+  julian_date
+  fuel_type
+
+  Dynamic Arrays
+  --------------
+  Jettison
+  Branch
+  tail_criteria
+  tail_number
+  acft_type
+  unit
+  dodaac
+  command
+  callsign
+  lbs
+  gallons
+  foreign
+  */
+
   if(isset($_POST))
+  {
+    $mission          = array();
+    $host_tail        = $_POST['host_tail_number'];
+    $host_unit        = $_POST['host_unit'];
+    $host_station     = $_POST['home_station'];
+    $host_command     = $_POST['host_command'];
+    $boom_operator    = $_POST['boom_operator'];
+    $transaction_date = $_POST['transaction_date'];
+    $julian_date      = $_POST['fuel_type'];
+    //
+    if($_POST['jettison'] === 'True')
+    {
+      $jettison = True;
+    }
+    else {
+      $jettison = False;
+    }
+    $branch        = $_POST['branch'];
+    $tail_criteria = $_POST['tail_criteria'];
+    $tail_number   = $_POST['tail_number'];
+    $acft_type     = $_POST['acft_type'];
+    $unit          = $_POST['unit'];
+    $dodaac        = $_POST['dodaac'];
+    $command       = $_POST['command'];
+    $callsign      = $_POST['callsign'];
+    $pounds        = $_POST['lbs'];
+    $gallons       = $_POST['gallons'];
+    $foreign       = $_POST['foreign'];
+
+    array_push($mission,$host_tail,$host_unit,$host_station,$host_command,$host_operator,$transaction_date,$julian_date);
+    array_push($mission,$tail_criteria,$tail_number,$acft_type,$unit,$dodaac,$command,$callsign,$pounds,$gallons,$country);
+
+    //print_r($mission);
+  }
+  else {
+    echo "ERROR";
+  }
 
  ?>
 
@@ -201,12 +320,68 @@ $(document).ready(function() {
         e.preventDefault();
         if(x < max_fields){
             x++;
-            var markup = '<div class="form-inline"><input type="checkbox" class="form-check-input" style="margin: -75px;" value="check"><input class="form-control col-sm-3" type="text" name="mytext[]"/>'
-            markup += '<input class="form-control col-sm-3" type="text" name="mytext[]"/>'
-            markup += '<a href="#" class="delete btn btn-danger">Delete</a></div>'
+            var markup;
+            markup  = '<div class="form-inline">'
+            markup += '<tr>'
+            markup += '<td><input type="checkbox" class="form-check-input-sm" style="margin-left: -110px;" value="True" id="jettison" name="jettison[]"></td>' /* Jettison */
+            markup += "<td>"
+            markup += '<select class="form-control-sm mb-2" name="branch" style="margin-left: -105px; margin-right: 50px;">' /* Branch */
+            markup += '<option value="" disabled selected hidden>Branch</option>'
+            markup += '<option value=""><?php echo "TEST"; ?></option>'
+            markup += '</select>'
+            markup += "</td>"
+            markup += "<td>"
+            markup += '<input class="form-control-sm mb-2 col-sm-1 text-center" style="margin-left: -45px; margin-right: 50px;" type="text" name="tail_criteria[]" placeholder="Tail# Criteria"/>' /* tail number criteria */
+            markup += "</td>"
+            markup += "<td>"
+            markup += '<select class="form-control-sm mb-2 col-sm-1" style="margin-left: -45px; margin-right: 45px;" name="tail_number[]">' /* tail number */
+            markup += '<option value="" disabled selected hidden>Tail Number</option>'
+            markup += '<option value=""><?php echo "TEST"; ?></option>'
+            markup += '</select>'
+            markup += '</td>'
+            markup += "<td>"
+            markup += '<input class="form-control-sm mb-2 col-sm-1 text-center" style="margin-left: -40px; margin-right: 10px;" type="text" name="acft_type[]" placeholder="Aircraft Type"/>' /* ACFT Type */
+            markup += "</td>"
+            markup += "<td>"
+            markup += '<select class="form-control-sm mb-2 col-sm-1" style="margin-left: -5px; margin-right: 15px;" name="unit[]">' /* Unit */
+            markup += '<option value="" disabled selected hidden>Unit</option>'
+            markup += '<option value=""><?php echo "TEST"; ?></option>'
+            markup += '</select>'
+            markup += '</td>'
+            markup += "<td>"
+            markup += '<input class="form-control-sm mb-2 col-sm-1 text-center" style="margin-left: -10px; margin-right: 15px;" type="text" name="dodaac[]" placeholder="DODAAC"/>' /* DODAAC */
+            markup += "</td>"
+            markup += "<td>"
+            markup += '<input class="form-control-sm mb-2 col-sm-1 text-center" style="margin-left: -10px; margin-right: 15px;" type="text" name="command[]" placeholder="Command"/>' /* Command */
+            markup += "</td>"
+            markup += "<td>"
+            markup += '<input class="form-control-sm mb-2 col-sm-1 text-center" style="margin-left: -10px; margin-right: 15px;" type="text" name="callsign[]" placeholder="Callsign"/>' /* Callsign */
+            markup += "</td>"
+            markup += "<td>"
+            markup += '<input class="form-control-sm mb-2 col-sm-1 text-center" style="margin-left: -10px; margin-right: 15px;" type="text" name="lbs[]" placeholder="Lbs. Delivered"/>' /* Pounds Delivered*/
+            markup += "</td>"
+            markup += "<td>"
+            markup += '<input class="form-control-sm mb-2 col-sm-1 text-center" style="margin-left: -10px; margin-right: 15px;" type="text" name="gallons[]" placeholder="Gallons"/>' /* Gallons */
+            markup += "</td>"
+            markup += "<td>"
+            markup += '<input class="form-control-sm mb-2 col-sm-1 text-center" style="margin-left: -10px; margin-right: 15px;" type="text" name="foreign[]" placeholder="FMS/Country"/>' /* FMS/Country */
+            markup += "</td>"
+            markup += "<td>"
+            markup += '<a href="#" class="delete btn btn-danger">X</a></div>'
+            markup += "</td>"
+            markup += "</tr>"
             $(wrapper).append(markup); //add input box
             /* '<div class="form-inline"><input type="checkbox" class="form-check-input" style="margin: -75px;" value="check"><input class="form-control col-sm-3" type="text" name="mytext[]"/><a href="#" class="delete btn btn-danger">Delete</a></div>' */
         }
+        /*
+        <div class="form-inline" style="float: left;">
+         <select class="form-control-sm mb-2" name="unitnumber">
+          <option value="" disabled selected hidden>  Boom Operator  </option>
+          <option value=""><?php echo "TEST"; ?></option>
+          <option value=""><?php echo "TEST" ?></option>
+          <option value=""><?php echo "TEST" ?></option>
+         </select>
+        */
   else
   {
   alert(' WARNING: Standard DD Form 791 Has 24 Fields ')

@@ -16,9 +16,9 @@
 
 </head>
  <body>
-  <?php include('../navbar.php'); ?>
+  <?php include('../view/navbar.php'); ?>
   <div class="container">
-    
+
   </div>
  </body>
 </html>
