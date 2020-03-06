@@ -21,8 +21,9 @@
 
   .custom-container
   {
+    margin-top:50px;
     margin: 0 auto;
-    width: 1500px;
+    width: 90%;
   }
 
   .container-dynamic
@@ -45,6 +46,11 @@
     margin-top: 5px;
     margin-left: 5px;
     margin-right: 5px;
+  }
+
+  .hidden-form
+  {
+    display: none;
   }
 
   h6
@@ -83,7 +89,7 @@
     julian_date
     fuel_type
 
-    Dynamic Arrays
+    Dynamic Array
     --------------
     Jettison
     Branch
@@ -99,21 +105,25 @@
     foreign
     -->
 <?php
-  $tail_number_query = "SELECT TAILNUMBER FROM acft_data";
+  $tail_number_query = "SELECT DISTINCT TAILNUMBER FROM acft_data ORDER BY TAILNUMBER ASC";
   $tx_tn_query = mysqli_query($conn,$tail_number_query);
-  $unit_query = "SELECT UNIT FROM acft_data";
+  $unit_query = "SELECT DISTINCT UNIT FROM acft_data";
   $tx_unit_query = mysqli_query($conn,$unit_query);
+  $location_query = "SELECT DISTINCT LOCATION FROM acft_data";
+  $tx_location_query = mysqli_query($conn,$location_query);
+  $cmd_query = "SELECT DISTINCT CMD FROM acft_data";
+  $tx_cmd_query = mysqli_query($conn,$cmd_query);
  ?>
 
 <body>
   <div class="custom-container">
-   <form class="form-inline" action="#" method="post">
+   <form class="form-inline" action="process_mission.php" method="post">
      <div class="container-static">
        <br>
        <h6 style="margin-left: 10px;">Mission Data</h6>
        <hr>
        <div class="form-inline form-custom" style="float: left;">
-         <select class="form-control-sm mb-2" name="host_tail_number">
+         <select class="form-control-sm mb-2" name="host_tail_number" required>
            <option value="" disabled selected hidden> Tail # </option>
            <?php
              while($row = mysqli_fetch_assoc($tx_tn_query))
@@ -127,7 +137,7 @@
          </select>
        </div>
        <div class="form-inline" style="float: left;">
-         <select class="form-control-sm mb-2 text-center" name="host_unit">
+         <select class="form-control-sm mb-2 text-center" name="host_unit"  required>
            <option value="" disabled selected hidden>  Unit  </option>
            <?php
              while($row = mysqli_fetch_assoc($tx_unit_query))
@@ -141,45 +151,57 @@
          </select>
        </div>
      <div class="form-inline" style="float: left;">
-       <select class="form-control-sm mb-2" name="home_station">
-         <option value="" disabled selected hidden>  Home Station  </option>
-         <option value=""><?php echo "TEST"; ?></option>
-         <option value=""><?php echo "TEST" ?></option>
-         <option value=""><?php echo "TEST" ?></option>
+       <select class="form-control-sm mb-2" name="home_station"  required>
+         <option value="" disabled selected hidden>  Location  </option>
+         <?php
+           while($row = mysqli_fetch_assoc($tx_location_query))
+           {
+             foreach($row as $entry => $value)
+             {
+               echo "<option value='{$value}'>$value</option>";
+             }
+           }
+          ?>
        </select>
      </div>
    <div class="form-inline" style="float: left;">
-     <select class="form-control-sm mb-2" name="host_command">
+     <select class="form-control-sm mb-2" name="host_command"  required>
        <option value="" disabled selected hidden>  Command  </option>
-       <option value=""><?php echo "TEST"; ?></option>
-       <option value=""><?php echo "TEST" ?></option>
-       <option value=""><?php echo "TEST" ?></option>
+       <?php
+         while($row = mysqli_fetch_assoc($tx_cmd_query))
+         {
+           foreach($row as $entry => $value)
+           {
+             echo "<option value='{$value}'>$value</option>";
+           }
+         }
+        ?>
      </select>
    </div>
    <br><br><br>
    <div class="form-inline" style="float: left;">
-     <input class="form-control-sm text-center" type="text" name="mission_number" value="" placeholder="Mission #">
+     <input class="form-control-sm text-center" type="text" name="mission_number" placeholder="Mission #" required>
    </div>
    <div class="form-inline" style="float: left;">
-    <select class="form-control-sm mb-2" name="boom_operator">
+    <select class="form-control-sm mb-2" name="boom_operator" required>
      <option value="" disabled selected hidden>  Boom Operator  </option>
-     <option value=""><?php echo "TEST"; ?></option>
-     <option value=""><?php echo "TEST" ?></option>
-     <option value=""><?php echo "TEST" ?></option>
+     <option value="Operator 1"><?php echo "Operator 1"; ?></option>
+     <option value="Operator 2"><?php echo "Operator 2"; ?></option>
+     <option value="Operator 3"><?php echo "Operator 3"; ?></option>
     </select>
    </div>
    <div class="form-inline" style="float: left;">
-    <input class="form-control-sm text-center" type="text" onfocus="(this.type='date')" name="transaction_date" value="" placeholder="Transaction Date">
+    <input class="form-control-sm text-center" type="text" onfocus="(this.type='date')" name="transaction_date" value="" placeholder="Transaction Date" required>
    </div>
    <div class="form-inline" style="float: left;">
-    <input class="form-control-sm text-center" type="text" name="julian_date" value="" placeholder="Julian Date">
+    <input class="form-control-sm text-center" type="text" name="julian_date" value="" placeholder="Julian Date" required>
    </div>
    <div class="form-inline" style="float: left;">
-    <select class="form-control-sm mb-2" name="fuel_type">
+    <select class="form-control-sm mb-2" name="fuel_type" required>
      <option value="" disabled selected hidden>  Fuel Type  </option>
-     <option value=""><?php echo "TEST"; ?></option>
-     <option value=""><?php echo "TEST" ?></option>
-     <option value=""><?php echo "TEST" ?></option>
+     <option value="REGULAR"><?php echo "REGULAR"; ?></option>
+     <option value="UNLEADED"><?php echo "UNLEADED" ?></option>
+     <option value="PREMIUM"><?php echo "PREMIUM" ?></option>
     </select>
    </div>
   </div>
@@ -237,80 +259,23 @@
 
 </html>
 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+
+<script>
 <?php
 
-  /*
-  Variable Names:
-  --------------
-  host_tail_number
-  host_unit
-  home_station
-  host_command
-  boom_operator
-  transaction_date
-  julian_date
-  fuel_type
-
-  Dynamic Arrays
-  --------------
-  Jettison
-  Branch
-  tail_criteria
-  tail_number
-  acft_type
-  unit
-  dodaac
-  command
-  callsign
-  lbs
-  gallons
-  foreign
-  */
-
-  if(isset($_POST))
-  {
-    $mission          = array();
-    $host_tail        = $_POST['host_tail_number'];
-    $host_unit        = $_POST['host_unit'];
-    $host_station     = $_POST['home_station'];
-    $host_command     = $_POST['host_command'];
-    $boom_operator    = $_POST['boom_operator'];
-    $transaction_date = $_POST['transaction_date'];
-    $julian_date      = $_POST['fuel_type'];
-    //
-    if($_POST['jettison'] === 'True')
-    {
-      $jettison = True;
-    }
-    else {
-      $jettison = False;
-    }
-    $branch        = $_POST['branch'];
-    $tail_criteria = $_POST['tail_criteria'];
-    $tail_number   = $_POST['tail_number'];
-    $acft_type     = $_POST['acft_type'];
-    $unit          = $_POST['unit'];
-    $dodaac        = $_POST['dodaac'];
-    $command       = $_POST['command'];
-    $callsign      = $_POST['callsign'];
-    $pounds        = $_POST['lbs'];
-    $gallons       = $_POST['gallons'];
-    $foreign       = $_POST['foreign'];
-
-    array_push($mission,$host_tail,$host_unit,$host_station,$host_command,$host_operator,$transaction_date,$julian_date);
-    array_push($mission,$tail_criteria,$tail_number,$acft_type,$unit,$dodaac,$command,$callsign,$pounds,$gallons,$country);
-
-    //print_r($mission);
-  }
-  else {
-    echo "ERROR";
-  }
+  $alt_tail_number_query = "SELECT DISTINCT TAILNUMBER FROM acft_data ORDER BY TAILNUMBER ASC";
+  $tx_alt_tn_query = mysqli_query($conn,$tail_number_query);
+  $alt_unit_query = "SELECT DISTINCT UNIT FROM acft_data";
+  $tx_alt_unit_query = mysqli_query($conn,$alt_unit_query);
 
  ?>
 
+function popOut()
+{
+  var jettison_type = prompt("What type of jettison occurred?");
+}
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
-<script>
 $(document).ready(function() {
     var max_fields      = 24;
     var wrapper         = $(".container-dynamic");
@@ -323,20 +288,19 @@ $(document).ready(function() {
             var markup;
             markup  = '<div class="form-inline">'
             markup += '<tr>'
-            markup += '<td><input type="checkbox" class="form-check-input-sm" style="margin-left: -110px;" value="True" id="jettison" name="jettison[]"></td>' /* Jettison */
+            markup += '<td><input type="checkbox" onclick="popOut()" class="form-check-input-sm" style="margin-left: -110px;" value="True" id="jettison" name="jettison[]"></td>' /* Jettison */
             markup += "<td>"
-            markup += '<select class="form-control-sm mb-2" name="branch" style="margin-left: -105px; margin-right: 50px;">' /* Branch */
+            markup += '<select class="form-control-sm mb-2" name="branch[]" style="margin-left: -105px; margin-right: 50px;">' /* Branch */
             markup += '<option value="" disabled selected hidden>Branch</option>'
-            markup += '<option value=""><?php echo "TEST"; ?></option>'
+            markup += '<option value="USAF"> USAF </option>';
+            markup += '<option value="USN"> USN  </option>';
+            markup += '<option value="FMS"> FMS  </option>';
             markup += '</select>'
             markup += "</td>"
             markup += "<td>"
-            markup += '<input class="form-control-sm mb-2 col-sm-1 text-center" style="margin-left: -45px; margin-right: 50px;" type="text" name="tail_criteria[]" placeholder="Tail# Criteria"/>' /* tail number criteria */
-            markup += "</td>"
-            markup += "<td>"
             markup += '<select class="form-control-sm mb-2 col-sm-1" style="margin-left: -45px; margin-right: 45px;" name="tail_number[]">' /* tail number */
-            markup += '<option value="" disabled selected hidden>Tail Number</option>'
-            markup += '<option value=""><?php echo "TEST"; ?></option>'
+            markup += '<option value="" disabled selected hidden>Tail#</option>'
+            markup += "<?php while($intake=mysqli_fetch_assoc($tx_alt_tn_query)){foreach($intake as $key=>$value) { echo "<option value='{$value}'>$value</option>"; } }?>"
             markup += '</select>'
             markup += '</td>'
             markup += "<td>"
@@ -345,7 +309,7 @@ $(document).ready(function() {
             markup += "<td>"
             markup += '<select class="form-control-sm mb-2 col-sm-1" style="margin-left: -5px; margin-right: 15px;" name="unit[]">' /* Unit */
             markup += '<option value="" disabled selected hidden>Unit</option>'
-            markup += '<option value=""><?php echo "TEST"; ?></option>'
+            markup += "<?php while($var=mysqli_fetch_assoc($tx_alt_unit_query)){ foreach($var as $v){ $str=substr($v,0,12); echo "<option value='{$str}'>$str</option>"; } } ?>"
             markup += '</select>'
             markup += '</td>'
             markup += "<td>"
@@ -364,24 +328,14 @@ $(document).ready(function() {
             markup += '<input class="form-control-sm mb-2 col-sm-1 text-center" style="margin-left: -10px; margin-right: 15px;" type="text" name="gallons[]" placeholder="Gallons"/>' /* Gallons */
             markup += "</td>"
             markup += "<td>"
-            markup += '<input class="form-control-sm mb-2 col-sm-1 text-center" style="margin-left: -10px; margin-right: 15px;" type="text" name="foreign[]" placeholder="FMS/Country"/>' /* FMS/Country */
+            markup += '<input class="form-control-sm mb-2 col-sm-1 text-center" style="margin-left: -10px; margin-right: 15px;" type="text" name="country[]" placeholder="Country"/>' /* FMS/Country */
             markup += "</td>"
             markup += "<td>"
             markup += '<a href="#" class="delete btn btn-danger">X</a></div>'
             markup += "</td>"
             markup += "</tr>"
-            $(wrapper).append(markup); //add input box
-            /* '<div class="form-inline"><input type="checkbox" class="form-check-input" style="margin: -75px;" value="check"><input class="form-control col-sm-3" type="text" name="mytext[]"/><a href="#" class="delete btn btn-danger">Delete</a></div>' */
+            $(wrapper).append(markup);
         }
-        /*
-        <div class="form-inline" style="float: left;">
-         <select class="form-control-sm mb-2" name="unitnumber">
-          <option value="" disabled selected hidden>  Boom Operator  </option>
-          <option value=""><?php echo "TEST"; ?></option>
-          <option value=""><?php echo "TEST" ?></option>
-          <option value=""><?php echo "TEST" ?></option>
-         </select>
-        */
   else
   {
   alert(' WARNING: Standard DD Form 791 Has 24 Fields ')
