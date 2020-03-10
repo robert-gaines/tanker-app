@@ -37,10 +37,10 @@
                                                         USER_LAST VARCHAR(256),
                                                         USER_RANK VARCHAR(256),
                                                         DESCRIPTION VARCHAR(256),
-                                                        ISADMIN BOOLEAN,
+                                                        ISADMIN VARCHAR(256),
                                                         SALT_VALUE FLOAT,
                                                         USER_PASS VARCHAR(256),
-                                                        IS_INACTIVE BOOLEAN,
+                                                        IS_INACTIVE VARCHAR(256),
                                                         PRIMARY KEY(USER_ID)
                                             ) ";
 

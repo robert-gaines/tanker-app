@@ -31,7 +31,8 @@
     $host_command     = $_POST['host_command'];
     $boom_operator    = $_POST['boom_operator'];
     $transaction_date = $_POST['transaction_date'];
-    $julian_date      = $_POST['fuel_type'];
+    $julian_date      = $_POST['julian_date'];
+    $fuel_type        = $_POST['fuel_type'];
     //
     $jettison      = $_POST['jettison'];
     $branch        = $_POST['branch'];
@@ -57,6 +58,13 @@
         $i++;
       }
     }
+    /* Submit Mission Data */
+
+    $mission_data_query = "INSERT INTO mission_data (MISSION_NUMBER, TAIL_NUMBER, UNIT, HOME_STATION, COMMAND, BOOM_OPERATOR, TRANSACTION_DATE, JULIAN_DATE, FUEL_TYPE)";
+    $mission_data_query .= "VALUES ('{$mission_number}','{$host_tail}','{$host_unit}','{$host_station}','{$host_command}','{$boom_operator}','{$transaction_date}','{$julian_date}','{$fuel_type}');";
+    $tx_mission_date = mysqli_query($conn,$mission_data_query);
+
+    /* Submit Transaction Data */
 
     $transactions = array();
 

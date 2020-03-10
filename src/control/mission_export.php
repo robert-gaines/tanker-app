@@ -1,15 +1,47 @@
 <?php
 
+  include('../../db/dbconnect.php');
+
+  if(isset($_POST['mission_number']))
+  {
+    $mission_number = $_POST['mission_number'];
+    $tail_number    = $_POST['tail_number'];
+    $unit           = $_POST['unit'];
+    $home_station   = $_POST['home_station'];
+    $command        = $_POST['command'];
+    $boom_operator  = $_POST['boom_operator'];
+    $mission_date   = $_POST['mission_date'];
+    $fuel_type      = $_POST['fuel_type'];
+  }
+  else
+  {
+    header("export_select.php");
+  }
+
+  $transaction_array = array();
+  $report_data_query = "SELECT * FROM transactions WHERE MISSION_NUMBER='{$mission_number}';";
+  $tx_report_data_query = mysqli_query($conn,$report_data_query);
+
+  while($row = mysqli_fetch_assoc($tx_report_data_query))
+  {
+    array_push($transaction_array,$row);
+  }
+
+  $ac_query = "SELECT * FROM acft_data WHERE TAILNUMBER='{$tail_number}';";
+  $tx_ac_query = mysqli_query($conn,$ac_query);
+
+  while($row = mysqli_fetch_assoc($tx_ac_query))
+  {
+    $country = $row['ACFT_COUNTRY'];
+    $type    = $row['ACFT_TYPE'];
+    $dodaac  = $row['DODAAC'];
+  }
+
   require('../../fpdf/fpdf.php');
 
   class PDF extends FPDF
   {
-    function OutVar($arg)
-    {
-      return $this->$arg;
-    }
-
-    function CreateTable()
+    function CreateTable($mission_number,$dodaac,$unit,$home_station,$country,$mission_date,$type,$tail_number,$fuel_type,$boom_operator,$transaction_array)
     {
       $var = 'Test';
       $this->SetXY(8,5);
@@ -18,6 +50,7 @@
       $this->SetFont('Times','B',8);
       $this->SetXY(8,15);
       $this->Cell(95,10,'1. MISSION NO: ',1);
+      $this->Text(32,20.95,"$mission_number");
       $this->Cell(99,5,'3. MISSION DATE AND TIME',1,0,'C');
       $this->Ln(2);
       $this->SetXY(103,20);
@@ -27,29 +60,45 @@
       $this->Cell(50,5,'b. END ',1,0,'C');
       $this->Ln();
       $this->SetXY(8,25);
-      $this->Cell(95,27,'2. TANKER (DoDAAC, Organization/Squadron Code, and Home Station) ',1,0,'L');
+      $this->Text(9,28,'2. TANKER (DoDAAC, Organization/Squadron Code, and Home Station) ');
+      $this->Cell(95,27,'',1,0,'L');
+      $this->Text(12,32,"$dodaac");
+      $this->Text(12,35,"$unit");
+      $this->Text(12,38,"$home_station");
+      $this->Text(28,38,"$country");
       $this->Ln(2);
       $this->SetXY(103,25);
-      $this->Cell(27,10,'DATE',1,0,'L');
+      $this->Text(112,28,'DATE');
+      $this->Cell(27,10,'',1,0,'L');
+      $this->Text(109,32,"$mission_date");
       $this->Ln(2);
       $this->SetXY(130,25);
-      $this->Cell(22,10,'TIME(Zulu)',1,0,'L');
+      $this->Text(132.5,28,'TIME (Zulu)');
+      $this->Cell(22,10,'',1,0,'L');
       $this->Ln(2);
       $this->SetXY(152,25);
-      $this->Cell(27,10,'DATE',1,0,'L');
+      $this->Text(161,28,'DATE');
+      $this->Cell(27,10,'',1,0,'L');
+      $this->Text(158,32,"$mission_date");
       $this->Ln(2);
       $this->SetXY(179,25);
-      $this->Cell(23,10,'TIME(Zulu)',1,0,'L');
+      $this->Text(182,28,'TIME(Zulu)');
+      $this->Cell(23,10,'',1,0,'L');
       $this->Ln(1);
       $this->SetXY(103,35);
-      $this->Cell(27,17,"4. TANKER TYPE ",1,0,'L');
-      /* $this->Text(110,50,"\ntest"); */
+      $this->Text(104,38,'4. TANKER TYPE ');
+      $this->Cell(27,17,'',1,0,'L');
+      $this->Text(113,45,"$type");
       $this->Ln(2);
       $this->SetXY(130,35);
-      $this->Cell(49,17,"5. TANKER NUMBER ",1,0,'L');
+      $this->Text(131,38,"5. TANKER NUMBER ");
+      $this->Cell(49,17,'',1,0,'L');
+      $this->Text(148,45,"$tail_number");
       $this->Ln(2);
       $this->SetXY(179,35);
-      $this->Cell(23,17,"6. FUEL GRADE ",1,0,'L');
+      $this->Text(180,38,"6. FUEL GRADE ");
+      $this->Cell(23,17,'',1,0,'L');
+      $this->Text(183,45,"$fuel_type");
       $this->Ln(1);
       $this->SetXY(8,52);
       $this->Cell(194,5," 7. ISSUES ",1,0,'C');
@@ -81,10 +130,51 @@
       $this->Ln(1);
       /* -- Start Fillable Rows -- */
       $y = 67;
-      for($i=0;$i<=24;$i++)
+      $totalPounds  = 0;
+      $totalGallons = 0;
+      foreach($transaction_array as $t)
       {
         $this->SetXY(8,$y);
         $this->Cell(25,5,"  ",1,0,'C');
+        $this->Text(10,$y+4,$t['COMMAND']);
+        $this->Ln(2);
+        $this->SetXY(33,$y);
+        $this->Cell(25,5,"  ",1,0,'C');
+        $this->Text(38,$y+4,$t['ACFT_TYPE']);
+        $this->Ln(2);
+        $this->SetXY(58,$y);
+        $this->Cell(25,5,"  ",1,0,'C');
+        $this->Text(61.5,$y+4,$t['TAIL_NUMBER']);
+        $this->Ln(2);
+        $this->SetXY(58,$y);
+        $this->Cell(25,5,"  ",1,0,'C');
+        $this->Text(86,$y+4,$t['CALLSIGN']);
+        $this->Ln(2);
+        $this->SetXY(83,$y);
+        $this->Cell(25,5,"  ",1,0,'C');
+        $this->Text(123.5,$y+4,$t['DODAAC']);
+        $this->Ln(2);
+        $this->SetXY(108,$y);
+        $this->Cell(50,5,"  ",1,0,'C');
+        $this->Text(166,$y+4,$t['POUNDS_DELIVERED']);
+        $totalPounds += $t['POUNDS_DELIVERED'];
+        $this->Ln(2);
+        $this->SetXY(158,$y);
+        $this->Cell(22,5,"  ",1,0,'C');
+        $this->Ln(1);
+        $this->SetXY(180,$y);
+        $this->Cell(22,5,"  ",1,0,'C');
+        $this->Text(187.5,$y+4,$t['TOTAL_GALLONS']);
+        $totalGallons += $t['TOTAL_GALLONS'];
+        $this->Ln(1);
+        $y+=5;
+      }
+      /* Display Padding */
+      for($i=0;$i<=(24-count($transaction_array));$i++)
+      {
+        $this->SetXY(8,$y);
+        $this->Cell(25,5,"  ",1,0,'C');
+        $this->Text(183,45,"");
         $this->Ln(2);
         $this->SetXY(33,$y);
         $this->Cell(25,5,"  ",1,0,'C');
@@ -112,15 +202,18 @@
       $this->Ln(2);
       $this->SetXY(8,$y);
       $this->Cell(130,8," 8. REFUELER'S NAME AND GRADE ",1,0,'L');
+      $this->Text(50,$y+4.5,"$boom_operator");
       $this->Ln(1);
       $this->SetXY(138,$y);
       $this->Cell(20,8," g. TOTAL ",1,0,'C');
       $this->Ln(1);
       $this->SetXY(158,$y);
       $this->Cell(22,8," ",1,0,'C');
+      $this->Text(166,$y+4,$totalPounds);
       $this->Ln(1);
       $this->SetXY(180,$y);
       $this->Cell(22,8," ",1,0,'C');
+      $this->Text(186,$y+4,$totalGallons);
       $this->Ln();
       $this->SetXY(8,$y);
       $this->Cell(194,40,"",1,0,'L');
@@ -133,7 +226,7 @@
       $this->Text(10,219,"    4. Aircraft Call Sign: Self Explanatory");
       $this->Text(10,222,"    5. Aircraft DoDAAC, Organization/Squadron Code, and Home Station");
       $this->Text(10,225,"    6. Quantity Issued: Amount (entered in pounds or gallons) as applicable.");
-      $this->Text(10,228,"NOTE:  When fuel is jettisoned, write 'JETTISONED' in the 'AIRCRAFT DoDAAC, Organization/Squadron Code, and Home Statio' column");
+      $this->Text(10,228,"NOTE:  When fuel is jettisoned, write 'JETTISONED' in the 'AIRCRAFT DoDAAC, Organization/Squadron Code, and Home Station column");
       $this->Text(10,231,"       and the amount of the fuel jettisoned in the 'Quantity Issued' column");
       $this->Ln();
       $this->SetFont('Arial','B',10);
@@ -147,7 +240,7 @@
 
   $pdf->AddPage();
 
-  $pdf->CreateTable();
+  $pdf->CreateTable($mission_number,$dodaac,$unit,$home_station,$country,$mission_date,$type,$tail_number,$fuel_type,$boom_operator,$transaction_array);
 
   $pdf->Output();
 

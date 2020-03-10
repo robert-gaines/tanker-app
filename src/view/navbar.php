@@ -28,7 +28,7 @@
 <body>
 <nav class="navbar navbar-expand-md bg-dark navbar-dark">
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
-    <span><img src="../Style/Images/logo4.PNG" alt="QD"></span>
+    <span><img src="#" alt="#"></span>
   </button>
   <div class="collapse navbar-collapse" id="collapsibleNavbar">
     <ul class="navbar-nav mx-auto">
@@ -46,9 +46,9 @@
    <li class="nav-item dropdown">
     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown">Export</a>
     <div class="dropdown-menu">
+      <a class="dropdown-item" href="#">Mission Data</a>
       <a class="dropdown-item" href="#">Boom Operators</a>
       <a class="dropdown-item" href="#">WRDCO Data</a>
-      <a class="dropdown-item" href="#">Mission Data</a>
     </div>
    </li>
    <li class="nav-item dropdown">
