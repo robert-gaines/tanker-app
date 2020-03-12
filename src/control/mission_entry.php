@@ -9,6 +9,8 @@
   <script src="../../style/bootstrap/dist/js/bootstrap.js"></script>
   <link rel="stylesheet" href="../../style/custom/custom.css">
   <link rel="stylesheet" href="../../style/custom/dynamic_form.css">
+  <?php session_start() ?>
+  <?php include('session_checker.php'); ?>
   <?php  include('../view/navbar.php')  ?>
   <?php include('../../db/dbconnect.php') ?>
   <style media="screen">
@@ -20,6 +22,7 @@
 
   .custom-container
   {
+    height: 100%;
     margin-top:50px;
     margin: 0 auto;
     width: 75%;
@@ -32,6 +35,7 @@
 
   .container-dynamic
   {
+    height: 100%;
     padding-top: 10px;
     padding-left: 10px;
     padding-bottom: 10px;
@@ -210,7 +214,7 @@
   </div>
   <br><br><br>
    <div class="container-dynamic" style="float: left;">
-     <div class="form-title">
+     <div class="form-title" style="width: 25%;">
        <h6>&nbsp Transaction Data</h6>
        <hr>
      </div>
@@ -250,8 +254,7 @@
      </tbody>
     </table>
    </div>
-   <br><br><br>
-   <div class="container mx-auto text-center" style="margin-top: 150px; background-color:lightgray;">
+   <div class="container mx-auto text-center" style="margin-top: 10px; background-color:lightgray;">
      <button type="reset" class="btn btn-danger col-sm-3"> Reset </button>
      <br><br>
      <button type="submit" class="btn btn-primary col-sm-3" name="login">Submit</button>

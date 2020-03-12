@@ -13,15 +13,32 @@
     <link rel="stylesheet" href="../../style/custom/custom.css">
     <style>
 
-        img
-        {
-            border-radius: 2px;
-        }
+        body
+            {
+                background-color: lightgray;
+            }
 
-        .dropdown-menu
-        {
-          background-color: lightgray;
-        }
+
+        .icon-bar {
+            width: 100px; /* Set a specific width */
+            height: 500px;
+            margin-right: 200px;
+            border-bottom-right-radius: 5px;
+         }
+        .icon-bar a {
+                display: block;
+                text-align: center;
+                padding: 16px;
+                transition: all 0.3s ease;
+                color: white;
+                font-size: 18px;
+            }
+        .icon-bar a:hover {
+            background-color: #000;
+            }
+        .active {
+            background-color: lightgray;
+           }
 
     </style>
 </head>
@@ -33,7 +50,7 @@
   <div class="collapse navbar-collapse" id="collapsibleNavbar">
     <ul class="navbar-nav mx-auto">
    <li class="nav-item">
-    <a class="nav-link" href="../model/user-landing.php">Home</a>
+    <a class="nav-link" href="../admin/admin-landing.php">Home</a>
    </li>
    <li class="nav-item dropdown">
     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown">Submit</a>
@@ -58,10 +75,29 @@
     </div>
    </li>
    <li class="nav-item dropdown">
+    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown">Identity</a>
+    <div class="dropdown-menu">
+      <a class="dropdown-item" href="../admin/add_user.php">Add User</a>
+      <a class="dropdown-item" href="#">Query User</a>
+      <a class="dropdown-item" href="#">Edit/Remove User</a>
+    </div>
+   </li>
+   <li class="nav-item dropdown">
     <a class="nav-link" href="../admin/logout.php">Logout</a>
    </li>
     </ul>
   </div>
 </nav>
+<div class="icon-bar bg-dark">
+ <div class="icon-bar">
+ <a href="admin-main.php"><i class="fa fa-home"></i></a>
+ <a href="../Control/admin-users.php"><i class="fa fa-user-circle-o"></i></a>
+ <a href="../Control/scheduled-sessions.php"><i class="fa fa-plane"></i></a>
+ <a href="../Control/ip-data.php"><i class="fa fa-folder"></i></a>
+ <a href="../Control/ip-data.php"><i class="fa fa-server"></i></a>
+ <a href="../Control/ip-data.php"><i class="fa fa-crosshairs"></i></a>
+ <a href="../admin/logout.php"><i class="fa fa-power-off"></i></a>
+ </div>
+</div>
 </body>
 </html>

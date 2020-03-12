@@ -1,3 +1,5 @@
+<?php session_start() ?>
+<?php include('session_checker_admin.php'); ?>
 <?php
 
   include('../../db/dbconnect.php');

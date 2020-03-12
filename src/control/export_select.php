@@ -9,6 +9,8 @@
   <script src="../../style/bootstrap/dist/js/bootstrap.js"></script>
   <link rel="stylesheet" href="../../style/custom/custom.css">
   <link rel="stylesheet" href="../../style/custom/dynamic_form.css">
+  <?php session_start() ?>
+  <?php include('session_checker.php'); ?>
   <?php  include('../view/navbar.php')  ?>
   <?php include('../../db/dbconnect.php') ?>
   <style media="screen">

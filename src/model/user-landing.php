@@ -8,7 +8,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-  <title>Admin Landing</title>
+  <title>User Landing</title>
 
   <link rel="stylesheet" href="../../style/bootstrap/dist/css/bootstrap.css">
   <script src="../../style/bootstrap/dist/js/bootstrap.js"></script>
@@ -25,9 +25,8 @@
 
 </head>
  <body>
-  <?php session_start() ?>
-  <?php include('session_checker_admin.php'); ?>
-  <?php include('../view/admin-navbar.php'); ?>
+  <?php include('../control/session_checker.php'); ?>
+  <?php include('../view/navbar.php'); ?>
   <div class="container" style="margin-top: -500px; margin-left: 100px; width: auto;">
     <p>test</p>
     <p>test</p>

@@ -1,3 +1,5 @@
+<?php session_start() ?>
+<?php include('session_checker.php'); ?>
 <?php
 
   include('../../db/dbconnect.php');
@@ -15,7 +17,7 @@
   }
   else
   {
-    header("export_select.php");
+    echo "<script> alert('Error') </script>";
   }
 
   $transaction_array = array();
@@ -65,7 +67,8 @@
       $this->Text(12,32,"$dodaac");
       $this->Text(12,35,"$unit");
       $this->Text(12,38,"$home_station");
-      $this->Text(28,38,"$country");
+      $offset = strlen($home_station)*1.5;
+      $this->Text(12+$offset,38,"$country");
       $this->Ln(2);
       $this->SetXY(103,25);
       $this->Text(112,28,'DATE');

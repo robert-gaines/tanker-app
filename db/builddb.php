@@ -36,12 +36,13 @@
                                                         USER_FIRST VARCHAR(256),
                                                         USER_LAST VARCHAR(256),
                                                         USER_RANK VARCHAR(256),
+                                                        USER_NAME VARCHAR(256),
                                                         DESCRIPTION VARCHAR(256),
                                                         ISADMIN VARCHAR(256),
-                                                        SALT_VALUE FLOAT,
                                                         USER_PASS VARCHAR(256),
                                                         IS_INACTIVE VARCHAR(256),
-                                                        PRIMARY KEY(USER_ID)
+                                                        PRIMARY KEY(USER_ID),
+                                                        UNIQUE KEY UNIQUE_USER_NAME (USER_NAME)
                                             ) ";
 
     /* Query creates a table which will list all of the WRDCO's  */
