@@ -1,5 +1,5 @@
 <?php session_start() ?>
-<?php include('session_checker_admin.php'); ?>
+<?php  ?>
 <?php
 
   include('../../db/dbconnect.php');
@@ -36,7 +36,15 @@
     $julian_date      = $_POST['julian_date'];
     $fuel_type        = $_POST['fuel_type'];
     //
-    $jettison      = $_POST['jettison'];
+    if(!(isset($_POST['jettison'])))
+    {
+      $jettison = array();
+    }
+    else
+    {
+      $jettison = $_POST['jettison'];
+    }
+    //
     $branch        = $_POST['branch'];
     $tail_number   = $_POST['tail_number'];
     $acft_type     = $_POST['acft_type'];
@@ -48,11 +56,11 @@
     $gallons       = $_POST['gallons'];
     $country       = $_POST['country'];
 
-    if(count($jettison) < count($branch))
+    if(count($jettison) <= count($branch))
     {
       while(count($jettison) < count($branch))
       {
-        $i = 0;;
+        $i = 0;
         if($jettison[$i] != '1')
         {
           array_splice($jettison,$i+1,0,'False');

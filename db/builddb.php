@@ -39,6 +39,7 @@
                                                         USER_NAME VARCHAR(256),
                                                         DESCRIPTION VARCHAR(256),
                                                         ISADMIN VARCHAR(256),
+                                                        IS_BOOM VARCHAR(256),
                                                         USER_PASS VARCHAR(256),
                                                         IS_INACTIVE VARCHAR(256),
                                                         PRIMARY KEY(USER_ID),

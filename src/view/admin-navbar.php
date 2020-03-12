@@ -45,7 +45,7 @@
 <body>
 <nav class="navbar navbar-expand-md bg-dark navbar-dark">
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
-    <span><img src="#" alt="#"></span>
+    <span class="icon-bar"><i class="fa fa-place"></i></span>
   </button>
   <div class="collapse navbar-collapse" id="collapsibleNavbar">
     <ul class="navbar-nav mx-auto">
@@ -53,21 +53,23 @@
     <a class="nav-link" href="../admin/admin-landing.php">Home</a>
    </li>
    <li class="nav-item dropdown">
-    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown">Submit</a>
+    <a class="nav-link" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown">Submit</a>
     <div class="dropdown-menu">
       <a class="dropdown-item" href="../control/mission_entry.php">Mission Data</a>
     </div>
   </li>
    <li class="nav-item dropdown">
-    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown">Query</a>
+    <a class="nav-link" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown">View</a>
     <div class="dropdown-menu">
       <a class="dropdown-item" href="#">Mission Data</a>
-      <a class="dropdown-item" href="#">Boom Operators</a>
+      <a class="dropdown-item" href="../model/view_boom_oprs.php">Boom Operators</a>
+      <a class="dropdown-item" href="../model/view_aircraft.php">Aircraft</a>
       <a class="dropdown-item" href="#">WRDCO</a>
+      <a class="dropdown-item" href="../model/view_users">Users</a>
     </div>
    </li>
    <li class="nav-item dropdown">
-    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown">Export</a>
+    <a class="nav-link" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown">Export</a>
     <div class="dropdown-menu">
       <a class="dropdown-item" href="../control/export_select.php">Mission Data</a>
       <a class="dropdown-item" href="#">Boom Operators</a>
@@ -75,29 +77,19 @@
     </div>
    </li>
    <li class="nav-item dropdown">
-    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown">Identity</a>
+    <a class="nav-link" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown">Identity</a>
     <div class="dropdown-menu">
       <a class="dropdown-item" href="../admin/add_user.php">Add User</a>
-      <a class="dropdown-item" href="#">Query User</a>
+      <a class="dropdown-item" href="../model/view_users.php">View Users</a>
       <a class="dropdown-item" href="#">Edit/Remove User</a>
     </div>
    </li>
-   <li class="nav-item dropdown">
+   <li class="nav-item">
     <a class="nav-link" href="../admin/logout.php">Logout</a>
    </li>
     </ul>
   </div>
 </nav>
-<div class="icon-bar bg-dark">
- <div class="icon-bar">
- <a href="admin-main.php"><i class="fa fa-home"></i></a>
- <a href="../Control/admin-users.php"><i class="fa fa-user-circle-o"></i></a>
- <a href="../Control/scheduled-sessions.php"><i class="fa fa-plane"></i></a>
- <a href="../Control/ip-data.php"><i class="fa fa-folder"></i></a>
- <a href="../Control/ip-data.php"><i class="fa fa-server"></i></a>
- <a href="../Control/ip-data.php"><i class="fa fa-crosshairs"></i></a>
- <a href="../admin/logout.php"><i class="fa fa-power-off"></i></a>
- </div>
 </div>
 </body>
 </html>

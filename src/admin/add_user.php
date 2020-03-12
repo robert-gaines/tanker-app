@@ -15,7 +15,7 @@
 
     h5
     {
-      margin-top: -310px;
+      margin-top: 10px;
       margin-bottom: 20px;
       text-decoration: underline;
       background-color: darkgray;
@@ -25,8 +25,6 @@
 
     form
     {
-      margin-top: -499px;
-      margin-left: 100px;
       background-color: darkgray;
       width: 75%;
     }
@@ -73,8 +71,12 @@
          <option value="OTHER">OTHER</option>
        </select>
      </div>
-     <div class="form-group text-center" style="margin-top: -15px;">
-       <input class="form-control-lg text-center col-sm-4" type="text" name="description" value="" placeholder="Description" required>
+     <div class="form-group text-center">
+       <select class="form-group form-control-lg text-center col-sm-4" name="is_boom_opr" required>
+         <option value=""disabled selected hidden>Boom Operator?</option>
+         <option value="boom">Boom Operator</option>
+         <option value="non-boom">Other User</option>
+       </select>
      </div>
      <div class="from-group text-center" style="margin-bottom: 5px;">
        <select class="form-group form-control-lg col-sm-4 text-center" name="isAdmin" required>
@@ -82,6 +84,9 @@
         <option value="administrator">Administrator</option>
         <option value="non-administrator">Non-Administrator</option>
        </select>
+     </div>
+     <div class="form-group text-center" style="margin-top: -5px;">
+       <input class="form-control-lg text-center col-sm-4" type="text" name="description" value="" placeholder="Description" required>
      </div>
      <div class="form-group text-center" style="margin-top: -5px;">
        <input class="form-group form-control-lg col-sm-4 text-center" type="text" name="user_name" value="" placeholder="User Name" required>
@@ -166,10 +171,11 @@
         $user_pass        = password_hash($user_pass, PASSWORD_BCRYPT);
         $user_description = $_POST['description'];
         $admin            = $_POST['isAdmin'];
+        $is_boom          = $_POST['is_boom_ops'];
         $status           = $_POST['status'];
 
-        $add_query  = "INSERT INTO users (USER_ID,USER_FIRST,USER_LAST,USER_RANK,USER_NAME,DESCRIPTION,ISADMIN,USER_PASS,IS_INACTIVE)";
-        $add_query .= "VALUES('','{$user_first}','{$user_last}','{$user_rank}','{$user_name}','{$user_description}','{$admin}','{$user_pass}','{$status}');";
+        $add_query  = "INSERT INTO users (USER_ID,USER_FIRST,USER_LAST,USER_RANK,USER_NAME,DESCRIPTION,ISADMIN,IS_BOOM,USER_PASS,IS_INACTIVE)";
+        $add_query .= "VALUES('','{$user_first}','{$user_last}','{$user_rank}','{$user_name}','{$user_description}','{$admin}','{$is_boom}','{$user_pass}','{$status}');";
         $tx_add_query = mysqli_query($conn,$add_query);
 
         if($tx_add_query)

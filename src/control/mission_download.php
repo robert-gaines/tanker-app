@@ -247,4 +247,6 @@
 
   $pdf->Output();
 
+  $pdf->Output('D',$fileName);
+
  ?>

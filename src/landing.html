@@ -68,7 +68,7 @@
               </div>
               <div class="form-group text-center">
                 <select class="form-group form-control" name="user_rank" required>
-                  <option value=""disabled selected>Rank</option>
+                  <option value=""disabled selected hidden>Rank</option>
                   <option value="AB">AB</option>
                   <option value="A1C">A1C</option>
                   <option value="SrA">SrA</option>
@@ -89,6 +89,13 @@
                   <option value="GEN">GEN</option>
                   <option value="CIV">CIV</option>
                   <option value="OTHER">OTHER</option>
+                </select>
+              </div>
+              <div class="form-group text-center">
+                <select class="form-group form-control" name="is_boom_opr" required>
+                  <option value=""disabled selected hidden>Boom Operator?</option>
+                  <option value="boom">Boom Operator</option>
+                  <option value="non-boom">Other User</option>
                 </select>
               </div>
               <div class="form-group">

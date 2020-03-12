@@ -61,22 +61,23 @@
         $user_pass        = $row['USER_PASS'];
         $status           = $row['IS_INACTIVE'];
       }
-      if(CheckCredentials($password,$user_pass) && CheckAdmin($admin_status) && CheckStatus($status))
+      if(CheckCredentials($password,$user_pass) && CheckStatus($status))
       {
         $_SESSION['user_first']  = $user_first;
         $_SESSION['user_last']   = $user_last;
         $_SESSION['user_rank']   = $user_rank;
-        $_SESSION['valid_admin'] = True;
-        $_SESSION['valid_user']  = True;
-        header("Location: admin-landing.php");
-      }
-      else if(CheckCredentials($password,$user_pass) && CheckStatus($status))
-      {
-        $_SESSION['user_first'] = $user_first;
-        $_SESSION['user_last']  = $user_last;
-        $_SESSION['user_rank']  = $user_rank;
-        $_SESSION['valid_user'] = True;
-        header("Location: ../model/user-landing.php");
+
+        if(CheckAdmin($admin_status))
+        {
+          $_SESSION['valid_admin'] = True;
+          $_SESSION['valid_user']  = True;
+          header("Location: admin-landing.php");
+        }
+        else
+        {
+          $_SESSION['valid_user'] = True;
+          header("Location: ../model/user-landing.php");
+        }
       }
       else
       {

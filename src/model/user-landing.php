@@ -25,7 +25,8 @@
 
 </head>
  <body>
-  <?php include('../control/session_checker.php'); ?>
+  <?php session_start(); ?>
+  <?php include('../control/session_checker.php') ?>
   <?php include('../view/navbar.php'); ?>
   <div class="container" style="margin-top: -500px; margin-left: 100px; width: auto;">
     <p>test</p>
