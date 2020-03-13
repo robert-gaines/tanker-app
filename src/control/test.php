@@ -23,117 +23,38 @@
 <?php
 
   include('../../db/dbconnect.php');
-
-  function ConvertDate($date)
+  date_default_timezone_set("America/Los_Angeles");
+  function grabIP()
   {
-    $segments = explode('-',$date);
-    $newDate  = gregoriantojd($segments[1],$segments[2],$segments[0]);
-    return $newDate;
+     $client = @$_SERVER['HTTP_CLIENT_IP'];
+     $forward = @$_SERVER['HTTP_X_FORWARDED_FOR'];
+     $remote = $_SERVER['REMOTE_ADDR'];
+
+     if(filter_var($client, FILTER_VALIDATE_IP))
+     {
+         $ip = $client;
+     }
+     else if(filter_var($forward, FILTER_VALIDATE_IP))
+     {
+         $ip = $forward;
+     }
+     else
+     {
+         $ip = $remote;
+     }
+
+     return $ip;
   }
 
-  function RetrieveUnit($var,$conn)
-  {
-    $query = "SELECT UNIT FROM acft_data WHERE TAILNUMBER='{$var}';";
-    $tx_query = mysqli_query($conn,$query);
-    if($tx_query)
-    {
-      while($row = mysqli_fetch_assoc($tx_query))
-      {
-        return $row['UNIT'];
-      }
-    }
-  }
-
-  function RetrieveCommand($var,$conn)
-  {
-    $query = "SELECT CMD FROM acft_data WHERE TAILNUMBER='{$var}';";
-    $tx_query = mysqli_query($conn,$query);
-    if($tx_query)
-    {
-      while($row = mysqli_fetch_assoc($tx_query))
-      {
-        return $row['CMD'];
-      }
-    }
-  }
-
-  function RetrieveStation($var,$conn)
-  {
-    $query = "SELECT LOCATION FROM acft_data WHERE TAILNUMBER='{$var}';";
-    $tx_query = mysqli_query($conn,$query);
-    if($tx_query)
-    {
-      while($row = mysqli_fetch_assoc($tx_query))
-      {
-        return $row['LOCATION'];
-      }
-    }
-  }
-
-$x = RetrieveUnit('78000582',$conn);
-$y = RetrieveCommand('78000582',$conn);
-$z = RetrieveStation('78000582',$conn);
-
-echo $x.$y.$z;
-
-function findStation(val)
-{
-  setCookie('host_station',val,1);
-  var julian_date = <?php echo json_encode(ConvertDate($_COOKIE['date'])); ?>;
-  document.getElementById("julian_date").value = julian_date;
-}
-
-function findCommand(val)
-{
-  setCookie('host_command',val,1);
-  var julian_date = <?php echo json_encode(ConvertDate($_COOKIE['date'])); ?>;
-  document.getElementById("julian_date").value = julian_date;
-}
-
-function findUnit(val)
-{
-  setCookie('host_unit',val,1);
-  var host_unit = <?php echo json_encode(RetrieveUnit($_COOKIE['host_unit'])); ?>;
-  document.getElementById("host_unit").value = host_unit;
-}
-
-
-function RetrieveUnit($var,$conn)
-{
-  $query = "SELECT UNIT FROM acft_data WHERE TAILNUMBER='{$var}';";
-  $tx_query = mysqli_query($conn,$query);
-  if($tx_query)
-  {
-    while($row = mysqli_fetch_assoc($tx_query))
-    {
-      return $row['UNIT'];
-    }
-  }
-}
-
-function RetrieveCommand($var,$conn)
-{
-  $query = "SELECT CMD FROM acft_data WHERE TAILNUMBER='{$var}';";
-  $tx_query = mysqli_query($conn,$query);
-  if($tx_query)
-  {
-    while($row = mysqli_fetch_assoc($tx_query))
-    {
-      return $row['CMD'];
-    }
-  }
-}
-
-function RetrieveStation($var,$conn)
-{
-  $query = "SELECT LOCATION FROM acft_data WHERE TAILNUMBER='{$var}';";
-  $tx_query = mysqli_query($conn,$query);
-  if($tx_query)
-  {
-    while($row = mysqli_fetch_assoc($tx_query))
-    {
-      return $row['LOCATION'];
-    }
-  }
-}
- ?>
+  $visitor_ip = grabIP();
+  //
+  $user_name = "TEST";
+  $day = date("Y-m-d");
+  $time = date("h:i:sa");
+  //
+  //
+  $log_query = "INSERT INTO ACCESS_DATA(SESSION_ID,USER_NAME,USER_IP,SESSION_DATE,SESSION_TIME)";
+  $log_query .= "VALUES('','{$user_name}','{$visitor_ip}','{$day}','{$time}')";
+  //
+  $tx_log_query = mysqli_query($conn,$log_query);
+?>

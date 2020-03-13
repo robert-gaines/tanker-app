@@ -94,6 +94,17 @@
                                                         PRIMARY KEY(MISSION_NUMBER)
                                                       )";
 
+    /* Query creates a table for application session data */
+
+    $create_access_data = "CREATE TABLE ACCESS_DATA (
+                                                      SESSION_ID INT(24) AUTO_INCREMENT,
+                                                      USER_NAME VARCHAR(256),
+                                                      USER_IP VARCHAR(256),
+                                                      SESSION_DATE VARCHAR(256),
+                                                      SESSION_TIME VARCHAR(256),
+                                                      PRIMARY KEY(SESSION_ID)
+                                                    )";
+
     /* Array comprises all of the SQL Table Creation queries  */
 
     $queries = array(
@@ -101,7 +112,8 @@
                       $create_user_data,
                       $create_wrdco_data,
                       $create_transaction_data,
-                      $create_mission_data
+                      $create_mission_data,
+                      $create_access_data
                     );
 
     for($i = 0; $i < count($queries); $i++)
