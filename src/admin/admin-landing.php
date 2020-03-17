@@ -45,6 +45,21 @@
   <?php include('session_checker_admin.php'); ?>
   <?php include('../../db/dbconnect.php'); ?>
   <?php include('../view/admin-navbar.php'); ?>
+  <?php
+      $ac_query             = "SELECT * FROM acft_data";
+      $tx_ac_query          = mysqli_query($conn,$ac_query);
+      $mission_query        = "SELECT * FROM mission_data";
+      $tx_mission_query     = mysqli_query($conn,$mission_query);
+      $transaction_query    = "SELECT * FROM transactions";
+      $tx_transaction_query = mysqli_query($conn,$transaction_query);
+      $user_query           = "SELECT * FROM users";
+      $tx_user_query        = mysqli_query($conn,$user_query);
+      $boom_query           = "SELECT * FROM users WHERE IS_BOOM='boom' ";
+      $tx_boom_query        = mysqli_query($conn,$boom_query);
+      $wrdco_query          = "SELECT * FROM wrdco";
+      $tx_wrdco_query       = mysqli_query($conn,$wrdco_query);
+   ?>
+<form class="" action="process_action.php" method="post" onSubmit="return confirm('Are you sure you want to proceed?')">
   <div class="container mx-auto">
     <div class="row mx-auto">
       <div class="card col-sm-3 mx-auto">
@@ -53,7 +68,7 @@
         <div class="card-body mx-auto">
         <h5 class="card-title mx-auto text-center"> <u>Aircraft</u> </h5>
         <h6 class="card-title mx-auto text-center"> Current Database Records </h6>
-        <h6 class='mx-auto'><?php ?></h6>
+        <h6 class='mx-auto text-center' style="font-weight:bold;"><?php echo mysqli_num_rows($tx_ac_query) ?></h6>
       </div>
     </div>
     <div class="card col-sm-3 mx-auto">
@@ -62,7 +77,7 @@
       <div class="card-body mx-auto">
       <h5 class="card-title mx-auto text-center"> <u>Missions</u> </h5>
       <h6 class="card-title mx-auto text-center"> Current Database Records </h6>
-      <h6 class='mx-auto'><?php ?></h6>
+      <h6 class='mx-auto text-center' style="font-weight:bold;"><?php echo mysqli_num_rows($tx_mission_query) ?></h6>
     </div>
   </div>
   <div class="card col-sm-3 mx-auto">
@@ -71,10 +86,9 @@
     <div class="card-body mx-auto">
     <h5 class="card-title mx-auto text-center"> <u>Transactions</u> </h5>
     <h6 class="card-title mx-auto text-center"> Current Database Records </h6>
-    <h6 class='mx-auto'><?php ?></h6>
+    <h6 class='mx-auto text-center' style="font-weight:bold;"><?php echo mysqli_num_rows($tx_transaction_query) ?></h6>
   </div>
-
-    </div>
+  </div>
   </div>
     <div class="row mx-auto">
       <div class="card col-sm-3 mx-auto">
@@ -83,7 +97,7 @@
         <div class="card-body mx-auto">
         <h5 class="card-title mx-auto text-center"> <u>Users</u> </h5>
         <h6 class="card-title mx-auto text-center"> Current Database Records </h6>
-        <h6 class='mx-auto'><?php ?></h6>
+        <h6 class='mx-auto text-center' style="font-weight:bold;"><?php echo mysqli_num_rows($tx_user_query) ?></h6>
       </div>
     </div>
     <div class="card col-sm-3 mx-auto">
@@ -92,7 +106,7 @@
       <div class="card-body mx-auto">
       <h5 class="card-title mx-auto text-center"> <u>Boom Operators</u> </h5>
       <h6 class="card-title mx-auto text-center"> Current Database Records </h6>
-      <h6 class='mx-auto'><?php ?></h6>
+      <h6 class='mx-auto text-center' style="font-weight:bold;"><?php echo mysqli_num_rows($tx_boom_query) ?></h6>
     </div>
   </div>
   <div class="card col-sm-3 mx-auto">
@@ -101,7 +115,7 @@
     <div class="card-body mx-auto">
     <h5 class="card-title mx-auto text-center"> <u>WRDCO's</u> </h5>
     <h6 class="card-title mx-auto text-center"> Current Database Records </h6>
-    <h6 class='mx-auto'><?php ?></h6>
+    <h6 class='mx-auto text-center' style="font-weight:bold;"><?php echo mysqli_num_rows($tx_wrdco_query) ?></h6>
   </div>
 
     </div>
@@ -110,7 +124,7 @@
   <div class="row mx-auto">
     <div class="card col-sm-3 mx-auto">
       <br>
-       <button class="btn btn-primary mx-auto" type="button" name="button"><i class="fa fa-database fa-5x mx-auto"></i></button>
+       <button class="btn btn-primary mx-auto" type="submit" name="backup_database"><i class="fa fa-database fa-5x mx-auto"></i></button>
       <div class="card-body mx-auto">
       <h5 class="card-title mx-auto text-center">Backup Database</h5>
       <h6 class='mx-auto'><?php ?></h6>
@@ -118,7 +132,7 @@
   </div>
   <div class="card col-sm-3 mx-auto">
     <br>
-     <button class="btn btn-danger mx-auto" type="button" name="button"><i class="fa fa-times-circle-o fa-5x mx-auto"></i></button>
+     <button class="btn btn-danger mx-auto" type="submit" name="purge_database"><i class="fa fa-times-circle-o fa-5x mx-auto"></i></button>
     <div class="card-body mx-auto">
     <h5 class="card-title mx-auto text-center"> Purge Database </h5>
     <h6 class='mx-auto'><?php ?></h6>
@@ -126,7 +140,7 @@
 </div>
 <div class="card col-sm-3 mx-auto">
   <br>
-   <button class="btn btn-success mx-auto" type="button" name="button"><i class="fa fa-folder-open-o fa-5x mx-auto"></i></button>
+   <button class="btn btn-success mx-auto" type="submit" name="populate_database"><i class="fa fa-folder-open-o fa-5x mx-auto"></i></button>
   <div class="card-body mx-auto">
   <h5 class="card-title mx-auto text-center">Populate Database</h5>
   <h6 class='mx-auto'><?php ?></h6>
@@ -147,7 +161,7 @@
   </div>
   <div class="card col-sm-3 mx-auto">
     <br>
-    <button class="btn btn-dark mx-auto" type="button" name="button"><i class="fa fa-download fa-5x mx-auto"></i></button>
+    <button class="btn btn-dark mx-auto" type="submit" name="export_logs"><i class="fa fa-download fa-5x mx-auto"></i></button>
     <div class="card-body mx-auto">
     <h5 class="card-title mx-auto text-center">Export Access Logs</h5>
     <h6 class='mx-auto'><?php ?></h6>
@@ -155,7 +169,7 @@
 </div>
 <div class="card col-sm-3 mx-auto">
   <br>
-   <button class="btn btn-warning mx-auto" type="button" name="button"><i class="fa fa-times-circle-o fa-5x mx-auto"></i></button>
+   <button class="btn btn-warning mx-auto" type="submit" name="purge_logs"><i class="fa fa-times-circle-o fa-5x mx-auto"></i></button>
   <div class="card-body mx-auto">
   <h5 class="card-title mx-auto text-center">Purge Access Logs</h5>
   <h6 class='mx-auto'><?php ?></h6>
@@ -220,7 +234,7 @@
     </div>
    </div>
   </div>
-</div>
-
+ </div>
+</form>
  </body>
 </html>

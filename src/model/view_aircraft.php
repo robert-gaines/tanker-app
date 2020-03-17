@@ -11,7 +11,7 @@
   <link rel="stylesheet" href="../../style/custom/dynamic_form.css">
   <?php session_start() ?>
   <?php include('../control/session_checker.php'); ?>
-  <?php  include('../view/navbar.php')  ?>
+  <?php include('../view/navbar.php')  ?>
   <?php include('../../db/dbconnect.php') ?>
   <style media="screen">
 

@@ -50,10 +50,15 @@
 
     $create_wrdco_data = "CREATE TABLE WRDCO (
                                                         WRDCO_ID INT(6) AUTO_INCREMENT,
+                                                        CUST_DODAAC VARCHAR(256),
+                                                        EBS_DODAAC VARCHAR(256),
+                                                        MDS VARCHAR(256),
                                                         UNIT VARCHAR(256),
-                                                        LOCATION VARCHAR(256),
                                                         CMD VARCHAR(256),
-                                                        WRDCO VARCHAR(256),
+                                                        LOCATION VARCHAR(256),
+                                                        LASTNAME VARCHAR(256),
+                                                        FIRSTNAME VARCHAR(256),
+                                                        RANK_VALUE VARCHAR(256),
                                                         DSN VARCHAR(256),
                                                         COMMERCIAL VARCHAR(256),
                                                         EMAIL VARCHAR(256),

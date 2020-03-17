@@ -24,7 +24,8 @@
                         "USERS",
                         "WRDCO",
                         "TRANSACTIONS",
-                        "MISSION_DATA"
+                        "MISSION_DATA",
+                        "ACCESS_DATA"
                       );
 
   for($i = 0; $i < count($table_array);$i++)

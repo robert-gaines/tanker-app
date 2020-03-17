@@ -1,0 +1,343 @@
+<?php session_start() ?>
+<?php include('session_checker_admin.php'); ?>
+<?php include('../../db/dbconnect.php'); ?>
+
+<?php
+
+  include_once('../../xlsx/simplexlsx/src/SimpleXLSX.php');
+
+  date_default_timezone_set("America/Los_Angeles");
+
+  $day = date("Y-m-d");
+  $time = date("h:i:sa");
+
+  function CheckFMS($arr)
+  {
+    $value = in_array('Country',$arr);
+    return $value;
+  }
+
+  function CheckCMD($arr)
+  {
+    $value = array_search('cmd',array_map('strtolower',$arr));
+    return $value;
+  }
+
+  function StandardizeFields($arr)
+  {
+    $fms = CheckFMS($arr);
+    $cmd = CheckCMD($arr);
+    if(!$fms)
+    {
+      array_splice($arr,0,0,'Country');
+      return $arr;
+    }
+    elseif(!$cmd)
+    {
+      array_splice($arr,4,0,'Command');
+      return $arr;
+    }
+    else
+    {
+      return $arr;
+    }
+  }
+
+  function InsertCountry($arr)
+  {
+    array_splice($arr,0,0,'USA');
+    return $arr;
+  }
+
+  function InsertCommand($arr)
+  {
+    array_splice($arr,4,0,'Foreign Command');
+    return $arr;
+  }
+
+  function CheckString($input)
+  {
+    $allChars = true;
+    for($i = 0; $i < strlen($input); $i++)
+    {
+        $test = ctype_digit($input[$i]);
+        if($test)
+        {
+          $allChars = false;
+        }
+    }
+    return $allChars;
+  }
+
+  function StandardizeLength($arr1,$arr2)
+  {
+    $len1 = count($arr1);
+    $len2 = count($arr2);
+    if($len2 < $len1)
+    {
+      while($len1 <= $len2+1)
+      {
+        array_push($arr2,"NULL");
+        $len1++;
+      }
+    }
+    return $arr2;
+  }
+
+  function PopulateAircraft($conn)
+  {
+    $xlsx = SimpleXLSX::parse('../../raw/acft.xlsx');
+
+    $sheetCount = count($xlsx->sheetNames());
+
+    for($i = 0; $i < $sheetCount; $i++)
+    {
+      $sheet   = $xlsx->rows($i);
+      $fields  = array();
+      for($j = 0; $j < count($sheet[$j]); $j++)
+      {
+        array_push($fields,$sheet[0][$j]);
+      }
+      $uniform_fields   = StandardizeFields($fields);
+      $condensed_fields = implode(",",$uniform_fields);
+      $extended_fields  = explode(",",$condensed_fields);
+      /* Define the Fields for the Aircraft Database */
+      $COUNTRY =  $extended_fields[0];
+      $TYPE    =  $extended_fields[1];
+      $TAIL    =  $extended_fields[2];
+      $UNIT    =  $extended_fields[3];
+      $COMMAND =  $extended_fields[4];
+      $DODAAC  =  $extended_fields[5];
+      $LOCATION = $extended_fields[6];
+      /* Parse out the record data */
+      for($x = 1; $x < count($sheet); $x++)
+      {
+        for($y = 0;$y < count($sheet[$x])-(count($sheet[$x])-1); $y++)
+        {
+            if(!($test = CheckString($sheet[$x][0])))
+            {
+                $uniform_records = InsertCountry($sheet[$x]);
+            }
+            else if(!($test = CheckString($sheet[$x][4])))
+            {
+                $uniform_records = InsertCommand($sheet[$x]);
+            }
+            else
+            {
+                $uniform_records = $sheet[$x];
+            }
+            /* Disposition of Records:
+               0-> Country
+               1-> Aircraft
+               2-> TailNumber
+               3-> Unit
+               4-> Command
+               5-> DODAAC
+               6-> Base
+            */
+            for($k = 0; $k < count($uniform_records);$k++)
+            {
+              if($uniform_records[$k] == null)
+              {
+                $uniform_records[$k] = "NULL";
+              }
+              if(count($uniform_records) < count($extended_fields))
+              {
+                $uniform_records = StandardizeLength($extended_fields,$uniform_records);
+              }
+            }
+            /* Individual Record Values */
+            $ac_country  = $uniform_records[0];
+            $ac_type     = $uniform_records[1];
+            $ac_tail     = $uniform_records[2];
+            $ac_unit     = $uniform_records[3];
+            $ac_command  = $uniform_records[4];
+            $ac_dodaac   = $uniform_records[5];
+            $ac_location = $uniform_records[6];
+            /* Insert Statement */
+            $insert_query = "INSERT INTO ACFT_DATA ( ACFT_ID,
+                                                     ACFT_COUNTRY,
+                                                     ACFT_TYPE,
+                                                     TAILNUMBER,
+                                                     UNIT,
+                                                     CMD,
+                                                     DODAAC,
+                                                     LOCATION)
+                                            VALUES ('',
+                                              '{$ac_country}',
+                                              '{$ac_type}',
+                                              '{$ac_tail}',
+                                              '{$ac_unit}',
+                                              '{$ac_command}',
+                                              '{$ac_dodaac}',
+                                              '{$ac_location}');";
+            /* Send the Query */
+            $tx_query = mysqli_query($conn,$insert_query);
+          }
+        }
+      }
+    }
+
+  function PopulateWRDCO($conn)
+  {
+    $wxlsx = SimpleXLSX::parse('../../raw/wrdco.xlsx');
+    $selection = $wxlsx->rows();
+    for($i = 1; $i < count($wxlsx->rows());$i++)
+    {
+      $customer_dodaac = $selection[$i][0];
+      $ebs_dodaac      = $selection[$i][1];
+      $mds             = $selection[$i][2];
+      $unit            = $selection[$i][3];
+      $cmd             = $selection[$i][4];
+      $location        = $selection[$i][5];
+      $lastname        = $selection[$i][6];
+      $firstname       = $selection[$i][7];
+      $rank            = $selection[$i][8];
+      $dsn             = $selection[$i][9];
+      $commercial      = $selection[$i][10];
+      $email           = $selection[$i][11];
+      /*
+          Disposition of Records:
+          ----------------------
+          -> WRDCO_ID
+          -> CUST_DODAAC
+          -> EBS_DODAAC
+          -> MDS
+          -> UNIT
+          -> CMD
+          -> LOCATION
+          -> LASTNAME
+          -> FIRSTNAME
+          -> RANK_VALUE
+          -> DSN
+          -> COMMERCIAL
+          -> EMAIL
+      */
+      $insert_query = "INSERT INTO wrdco ( WRDCO_ID,
+                                           CUST_DODAAC,
+                                           EBS_DODAAC,
+                                           MDS,
+                                           UNIT,
+                                           CMD,
+                                           LOCATION,
+                                           LASTNAME,
+                                           FIRSTNAME,
+                                           RANK_VALUE,
+                                           DSN,
+                                           COMMERCIAL,
+                                           EMAIL)
+                                      VALUES ('',
+                                        '{$customer_dodaac}',
+                                        '{$ebs_dodaac}',
+                                        '{$mds}',
+                                        '{$unit}',
+                                        '{$cmd}',
+                                        '{$location}',
+                                        '{$lastname}',
+                                        '{$firstname}',
+                                        '{$rank}',
+                                        '{$dsn}',
+                                        '{$commercial}',
+                                        '{$email}'
+                                        );";
+        /* Send the Query */
+        $tx_query = mysqli_query($conn,$insert_query);
+    }
+
+  }
+
+
+  function ExportLogs($conn,$day,$time)
+  {
+    $fileName        = "../../export/access_logs_exported_".$day.'_'.$time.'.csv';
+    $fileName        = str_replace(':','_',$fileName);
+    $fileObject      = fopen($fileName,'w');
+    $export_query    = "SELECT * FROM access_data";
+    $tx_export_query = mysqli_query($conn,$export_query);
+    while($row = mysqli_fetch_assoc($tx_export_query))
+    {
+      fputcsv($fileObject,$row);
+    }
+    header("Location: admin-landing.php");
+  }
+
+  function ExportDatabase($conn,$day,$time)
+  {
+    $tableNames = array(
+                        "access_data",
+                        "acft_data",
+                        "mission_data",
+                        "transactions",
+                        "users",
+                        "wrdco"
+                       );
+    foreach($tableNames as $t)
+    {
+      $fileName   = '../../export/'.$t.'_'.$day.'_'.$time.'.csv';
+      $fileName   = str_replace(':','_',$fileName);
+      $query      = "SELECT * FROM {$t} ;";
+      $tx_query   = mysqli_query($conn,$query);
+      $fileObject = fopen($fileName,'w');
+      while($row = mysqli_fetch_assoc($tx_query))
+      {
+        fputcsv($fileObject,$row);
+      }
+    }
+  }
+
+  function PurgeDatabase($conn)
+  {
+    $tableNames = array(
+                        "acft_data",
+                        "wrdco"
+                       );
+    foreach($tableNames as $t)
+    {
+      $query    = "TRUNCATE TABLE {$t};";
+      $tx_query = mysqli_query($conn,$query);
+    }
+  }
+
+  function PurgeAccessLogs($conn)
+  {
+    $tableNames = array(
+                        "access_data"
+                       );
+    foreach($tableNames as $t)
+    {
+      $query    = "TRUNCATE TABLE {$t};";
+      $tx_query = mysqli_query($conn,$query);
+    }
+  }
+
+  $keys = array_keys($_POST);
+
+  $option = $keys[0];
+
+  switch ($option) {
+    case "export_logs":
+        ExportLogs($conn,$day,$time);
+        header("Location: admin-landing.php");
+        break;
+    case "purge_logs":
+        echo "Purge Logs";
+        header("Location: admin-landing.php");
+        break;
+    case "purge_database":
+        PurgeDatabase($conn);
+        header("Location: admin-landing.php");
+        break;
+    case "backup_database":
+        ExportDatabase($conn,$day,$time);
+        header("Location: admin-landing.php");
+        break;
+    case "populate_database":
+        PopulateAircraft($conn);
+        PopulateWRDCO($conn);
+        header("Location: admin-landing.php");
+        break;
+    default:
+        header("Location: admin-landing.php");
+    }
+
+ ?>
