@@ -12,6 +12,7 @@
   <?php session_start() ?>
   <?php include('../control/session_checker.php'); ?>
   <?php include('../../db/dbconnect.php') ?>
+  <?php error_reporting(0);                   ?>
   <?php
     if(isset($_SESSION['valid_admin']))
     {

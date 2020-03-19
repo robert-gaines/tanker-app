@@ -10,6 +10,7 @@
   <?php session_start() ?>
   <?php include('session_checker.php'); ?>
   <?php include('../../db/dbconnect.php') ?>
+  <?php error_reporting(0);                   ?>
   <style media="screen">
 
   body,html

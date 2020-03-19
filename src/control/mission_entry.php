@@ -11,6 +11,7 @@
   <link rel="stylesheet" href="../../style/custom/dynamic_form.css">
   <?php session_start() ?>
   <?php include('session_checker.php'); ?>
+  <?php error_reporting(0);                   ?>
   <?php
     if(isset($_SESSION['valid_admin']))
     {
@@ -34,18 +35,19 @@
     height: 100%;
     margin-top:50px;
     margin: 0 auto;
-    width: 75%;
+    width: auto;
   }
 
   .container-static
   {
-    width: 100%;
+    width: auto;
     margin-bottom: 100px;
   }
 
   .container-dynamic
   {
     height: 100%;
+    width: auto;
     padding-top: 10px;
     padding-left: 10px;
     padding-bottom: 10px;
@@ -69,6 +71,13 @@
   .hidden-form
   {
     display: none;
+  }
+
+  th
+  {
+    position: sticky;
+    top: 0px;
+    background: white;
   }
 
   </style>
@@ -111,6 +120,18 @@
   $cmd_query = "SELECT DISTINCT CMD FROM acft_data";
   $tx_cmd_query = mysqli_query($conn,$cmd_query);
  ?>
+
+ <?php
+   $user_query = "SELECT USER_FIRST,USER_LAST FROM users WHERE IS_BOOM='boom';";
+   $tx_boom_query = mysqli_query($conn,$user_query);
+  ?>
+
+  <?php
+
+    $tn_second_query = "SELECT TAILNUMBER,ACFT_TYPE,UNIT,DODAAC,LOCATION FROM acft_data;";
+    $tx_second_query = mysqli_query($conn,$tn_second_query);
+
+   ?>
 
  <?php
 
@@ -177,7 +198,7 @@
          </select>
        </div>
        <div class="form-inline" style="float: left;">
-         <select class="form-control-sm mb-2 text-center" name="host_unit" id="host_unit" required>
+         <select class="form-control-sm col-sm-3 mb-2 text-center" name="host_unit" id="host_unit" required>
            <option value="" disabled selected hidden>Unit</option>
            <?php
              while($row = mysqli_fetch_assoc($tx_unit_query))
@@ -189,46 +210,48 @@
              }
             ?>
          </select>
-       </div>
-     <div class="form-inline" style="float: left;">
-       <select class="form-control-sm mb-2" name="home_station" id='host_station'  required>
-         <option value="" disabled selected hidden>  Location  </option>
-         <?php
-           while($row = mysqli_fetch_assoc($tx_location_query))
-           {
-             foreach($row as $entry => $value)
+         &nbsp&nbsp
+         <select class="form-control-sm mb-2 col-sm-3" name="home_station" id='host_station'  required>
+           <option value="" disabled selected hidden>  Location  </option>
+           <?php
+             while($row = mysqli_fetch_assoc($tx_location_query))
              {
-               echo "<option value='{$value}'>$value</option>";
+               foreach($row as $entry => $value)
+               {
+                 echo "<option value='{$value}'>$value</option>";
+               }
              }
-           }
-          ?>
-       </select>
-     </div>
-   <div class="form-inline" style="float: left;">
-     <select class="form-control-sm mb-2" name="host_command" id='host_command' required>
-       <option value="" disabled selected hidden>  Command  </option>
-       <?php
-         while($row = mysqli_fetch_assoc($tx_cmd_query))
-         {
-           foreach($row as $entry => $value)
-           {
-             echo "<option value='{$value}'>$value</option>";
-           }
-         }
-        ?>
-     </select>
-   </div>
+            ?>
+         </select>
+         &nbsp&nbsp
+         <select class="form-control-sm mb-2 col-sm-3" name="host_command" id='host_command' required>
+           <option value="" disabled selected hidden>  Command  </option>
+           <?php
+             while($row = mysqli_fetch_assoc($tx_cmd_query))
+             {
+               foreach($row as $entry => $value)
+               {
+                 echo "<option value='{$value}'>$value</option>";
+               }
+             }
+            ?>
+         </select>
+       </div>
    <br><br><br>
    <div class="form-inline" style="float: left;">
      <input class="form-control-sm text-center" type="text" name="mission_number" placeholder="Mission #" required>
    </div>
    <div class="form-inline" style="float: left;">
-    <select class="form-control-sm mb-2" name="boom_operator" required>
-     <option value="" disabled selected hidden>  Boom Operator  </option>
-     <option value="Operator 1"><?php echo "Operator 1"; ?></option>
-     <option value="Operator 2"><?php echo "Operator 2"; ?></option>
-     <option value="Operator 3"><?php echo "Operator 3"; ?></option>
-    </select>
+     <?php
+     echo "<select class='form-control-sm mb-2' style='float: left;' name='boom_operator' id='boom_operator' required>";
+     echo "<option value='' disabled selected hidden> Boom Operator </option>";
+     while($row = mysqli_fetch_assoc($tx_boom_query))
+     {
+       $fullName = $row['USER_FIRST']." ".$row['USER_LAST'];
+       echo "<option value='{$fullName}'>$fullName</option>";
+     }
+     echo "</select>";
+     ?>
    </div>
    <div class="form-inline" style="float: left;">
     <input class="form-control-sm text-center" type="text" onfocus="(this.type='date')" name="transaction_date" id="transaction_date" oninput="convertDate(this.value)" value="" placeholder="Transaction Date" required>
@@ -239,29 +262,74 @@
    <div class="form-inline" style="float: left;">
     <select class="form-control-sm mb-2" name="fuel_type" required>
      <option value="" disabled selected hidden>  Fuel Type  </option>
-     <option value="REGULAR"><?php echo "REGULAR"; ?></option>
-     <option value="UNLEADED"><?php echo "UNLEADED"; ?></option>
-     <option value="PREMIUM"><?php echo "PREMIUM"; ?></option>
+     <option value="JP-8"><?php echo "JP-8"; ?></option>
+     <option value="JP-5"><?php echo "JP-5"; ?></option>
+     <option value="AVGAS"><?php echo "AVGAS"; ?></option>
     </select>
    </div>
+   <br><br><br>
+   <div style="float:left; margin-left: 10px; margin-top: 10px; margin-bottom: 15px;">
+     <button type="button" name="ac_table" class="btn btn-block btn-dark" data-toggle="modal" data-target="#ac_table"> Research Tailnumbers </button>
+   </div>
   </div>
-  <br><br><br>
+  <br>
   <div class="form-title text-left" style="width: 100%; margin-top: 10px;">
     <h6>&nbsp Transaction Data</h6>
     <hr>
   </div>
-  <div class="container-dynamic" style="float: left; margin-top: 10px; margin-bottom: 10px;">
+  <div class="container-dynamic" style="float: left; margin-top: 0px; margin-bottom: 10px; margin-left: 50px;">
    <div>
-    <button class="add_form_field btn btn-primary"> + <span style="font-size:16px; font-weight:bold; margin-bottom: 15px; "> </span> <!-- </button> <input type="text" name="mytext[]"> -->
+    <button class="add_form_field btn btn-primary"> + <span style="font-size:16px; font-weight:bold; margin-bottom: 15px;"> </span>
    </div>
-    <p class="text-left" style="margin-top: 10px;">Jettison?</p>
    <br>
  </div>
  <div class="container mx-auto text-center" style="margin-top: 10px; background-color:lightgray;">
    <button type="reset" class="btn btn-danger col-sm-3"> Reset </button>
-   <button type="submit" class="btn btn-primary col-sm-3" name="login">Submit</button>
+   <button type="submit" class="btn btn-primary col-sm-3" name="entry">Submit</button>
  </div>
   </form>
+
+  <div class="modal fade" id="ac_table" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+   <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+      <h5 class="modal-title" id="exampleModalLabel">Aircraft Data</h5>
+       <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+       </button>
+        </div>
+        <table class="table table-hover table-responsive overflow-auto" style="max-height: 300px; width: 1200px;">
+          <thead class="text-center">
+            <th>Tail #</th>
+            <th>Aircraft Type</th>
+            <th>Unit</th>
+            <th>DODAAC</th>
+            <th>Location</th>
+          </thead>
+          <tbody class="text-center">
+            <?php
+                while($row = mysqli_fetch_assoc($tx_second_query))
+                {
+                  $tailnumber = $row['TAILNUMBER'];
+                  $type       = $row['ACFT_TYPE'];
+                  $unit       = $row['UNIT'];
+                  $dodaac     = $row['DODAAC'];
+                  $location   = $row['LOCATION'];
+                  echo "<tr>";
+                  echo "<td>$tailnumber</td>";
+                  echo "<td>$type</td>";
+                  echo "<td>$unit</td>";
+                  echo "<td>$dodaac</td>";
+                  echo "<td>$location</td>";
+                  echo "</tr>";
+                }
+             ?>
+          </tbody>
+        </table>
+        </form>
+      </div>
+    </div>
+  </div>
 
 </body>
 
@@ -294,19 +362,25 @@ $(document).ready(function() {
         if(x < max_fields){
             x++;
             var markup;
-            markup  = '<div class="form-inline">'
-            markup += '<input type="checkbox" onclick="popOut()" class="form-check-input-sm" style="margin-left: -110px;" value="True" id="jettison" name="jettison[]">' /* Jettison */
-            markup += '<select class="form-control-sm mb-2" name="branch[]" style="margin-left: -105px; margin-right: 50px;">' /* Branch */
+            markup  = '<div class="form-inline col-sm-12">'
+            /* markup += '<input type="checkbox" onclick="popOut()" class="form-check-input-sm" style="margin-left: -110px;" value="True" id="jettison" name="jettison[]">' /* Jettison */
+            markup += '<select class="form-control-sm mb-2" name="jettison[]" style="margin-left: -15px; margin-right: 55px;" required>' /* Jettison */
+            markup += '<option value="" disabled selected hidden>Jettison?</option>'
+            markup += '<option value="no"> No </option>';
+            markup += '<option value="controlled"> Yes - Controlled    </option>';
+            markup += '<option value="uncontrolled"> Yes - Uncontrolled  </option>';
+            markup += '</select>'
+            markup += '<select class="form-control-sm mb-2" name="branch[]" style="margin-left: -50px; margin-right: 5px;">' /* Branch */
             markup += '<option value="" disabled selected hidden>Branch</option>'
             markup += '<option value="USAF"> USAF </option>';
             markup += '<option value="USN"> USN  </option>';
             markup += '<option value="FMS"> FMS  </option>';
             markup += '</select>'
-            markup += '<select class="form-control-sm mb-2 col-sm-1" style="margin-left: -45px; margin-right: 45px;" name="tail_number[]">' /* tail number */
+            markup += '<select class="form-control-sm mb-2" style="margin-left: 0px; margin-right: 15px;" name="tail_number[]">' /* tail number */
             markup += '<option value="" disabled selected hidden>Tail#</option>'
             markup += "<?php while($intake=mysqli_fetch_assoc($tx_alt_tn_query)){foreach($intake as $key=>$value) { echo "<option value='{$value}'>$value</option>"; } }?>"
             markup += '</select>'
-            markup += '<input class="form-control-sm mb-2 col-sm-1 text-center" style="margin-left: -40px; margin-right: 10px;" type="text" name="acft_type[]" placeholder="Aircraft Type"/>' /* ACFT Type */
+            markup += '<input class="form-control-sm mb-2 text-center col-sm-1" style="margin-left: -10px; margin-right: 10px;" type="text" name="acft_type[]" placeholder="Aircraft Type"/>' /* ACFT Type */
             markup += '<select class="form-control-sm mb-2 col-sm-1" style="margin-left: -5px; margin-right: 15px;" name="unit[]">' /* Unit */
             markup += '<option value="" disabled selected hidden>Unit</option>'
             markup += "<?php while($var=mysqli_fetch_assoc($tx_alt_unit_query)){ foreach($var as $v){ $str=substr($v,0,12); echo "<option value='{$str}'>$str</option>"; } } ?>"

@@ -70,7 +70,7 @@
     $create_transaction_data = "CREATE TABLE TRANSACTIONS (
                                                         TRANSACTION_ID INT(24) AUTO_INCREMENT,
                                                         MISSION_NUMBER VARCHAR(256),
-                                                        JETTISON BOOLEAN,
+                                                        JETTISON VARCHAR(256),
                                                         TAIL_NUMBER VARCHAR(256),
                                                         BRANCH VARCHAR(256),
                                                         ACFT_TYPE VARCHAR(256),

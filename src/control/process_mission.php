@@ -22,7 +22,34 @@
     return $tempTwo;
   }
 
-  if(isset($_POST))
+  function detectJettison()
+  {
+    foreach($_POST as $entry)
+    {
+      for($i = 0; $i < count($_POST['branch']);$i++)
+      {
+        if($_POST['jettison'][$i] !== 'no')
+        {
+           $a = array(0 => 'JETTISON');
+           $b = array(0 => '');
+           array_splice($_POST['branch'],$i,1,$b);
+           array_splice($_POST['tail_number'],$i,1,$b);
+           array_splice($_POST['acft_type'],$i,1,$b);
+           array_splice($_POST['unit'],$i,1,$b);
+           array_splice($_POST['dodaac'],$i,1,$a);
+           array_splice($_POST['command'],$i,1,$b);
+           array_splice($_POST['callsign'],$i,1,$b);
+           array_splice($_POST['country'],$i,1,$b);
+        }
+      }
+    }
+  }
+
+  detectJettison($_POST);
+
+  print_r($_POST);
+
+  if(isset($_POST['branch']))
   {
     $mission          = array();
     $transaction      = array();
@@ -36,15 +63,7 @@
     $julian_date      = $_POST['julian_date'];
     $fuel_type        = $_POST['fuel_type'];
     //
-    if(!(isset($_POST['jettison'])))
-    {
-      $jettison = array();
-    }
-    else
-    {
-      $jettison = $_POST['jettison'];
-    }
-    //
+    $jettison      = $_POST['jettison'];
     $branch        = $_POST['branch'];
     $tail_number   = $_POST['tail_number'];
     $acft_type     = $_POST['acft_type'];
@@ -52,62 +71,48 @@
     $dodaac        = $_POST['dodaac'];
     $command       = $_POST['command'];
     $callsign      = $_POST['callsign'];
+    $country       = $_POST['country'];
     $pounds        = $_POST['lbs'];
     $gallons       = $_POST['gallons'];
-    $country       = $_POST['country'];
+  }
+  else if(!isset($_POST['branch']))
+  {
+    echo "<script> alert('Incomplete Form!') </script>";
+    header('Location: mission_entry.php');
+  }
+  else {
+    echo "<script> alert('ERROR') </script>";
+    header('Location: mission_entry.php');
+  }
+  /* Submit Mission Data */
 
-    if(count($jettison) <= count($branch))
+  $mission_data_query = "INSERT INTO mission_data (MISSION_NUMBER, TAIL_NUMBER, UNIT, HOME_STATION, COMMAND, BOOM_OPERATOR, TRANSACTION_DATE, JULIAN_DATE, FUEL_TYPE)";
+  $mission_data_query .= "VALUES ('{$mission_number}','{$host_tail}','{$host_unit}','{$host_station}','{$host_command}','{$boom_operator}','{$transaction_date}','{$julian_date}','{$fuel_type}');";
+  $tx_mission_date = mysqli_query($conn,$mission_data_query);
+
+  /* Submit Transaction Data */
+
+  $transactions = array();
+
+  $parsed_transactions = parseEntries($jettison,$branch,$tail_number,$acft_type,$unit,$dodaac,$command,$callsign,$pounds,$gallons,$country,$transactions);
+
+  function SubmitTransactionEntries($arr,$mission_number,$conn)
+  {
+    foreach($arr as $entry)
     {
-      while(count($jettison) < count($branch))
-      {
-        $i = 0;
-        if($jettison[$i] != '1')
-        {
-          array_splice($jettison,$i+1,0,'False');
-        }
-        $i++;
-      }
+      $single_transaction = implode($entry,',');
+      list($jettison,$branch,$tail_number,$acft_type,$unit,$dodaac,$command,$callsign,$pounds,$gallons,$country)=explode(',',$single_transaction);
+      //
+      $insert_query = "INSERT INTO transactions (TRANSACTION_ID,MISSION_NUMBER,JETTISON,TAIL_NUMBER,BRANCH,ACFT_TYPE,UNIT,DODAAC,COMMAND,CALLSIGN,POUNDS_DELIVERED,TOTAL_GALLONS,FMS_COUNTRY)";
+      $insert_query .= "VALUES ('','{$mission_number}','{$jettison}','{$tail_number}','{$branch}','{$acft_type}','{$unit}','{$dodaac}','{$command}','{$callsign}','{$pounds}','{$gallons}','{$country}');";
+      //
+      $tx_transaction = mysqli_query($conn,$insert_query);
     }
-    /* Submit Mission Data */
+  }
 
-    $mission_data_query = "INSERT INTO mission_data (MISSION_NUMBER, TAIL_NUMBER, UNIT, HOME_STATION, COMMAND, BOOM_OPERATOR, TRANSACTION_DATE, JULIAN_DATE, FUEL_TYPE)";
-    $mission_data_query .= "VALUES ('{$mission_number}','{$host_tail}','{$host_unit}','{$host_station}','{$host_command}','{$boom_operator}','{$transaction_date}','{$julian_date}','{$fuel_type}');";
-    $tx_mission_date = mysqli_query($conn,$mission_data_query);
+  SubmitTransactionEntries($parsed_transactions,$mission_number,$conn);
 
-    /* Submit Transaction Data */
-
-    $transactions = array();
-
-    $parsed_transactions = parseEntries($jettison,$branch,$tail_number,$acft_type,$unit,$dodaac,$command,$callsign,$pounds,$gallons,$country,$transactions);
-
-    function SubmitTransactionEntries($arr,$mission_number,$conn)
-    {
-      foreach($arr as $entry)
-      {
-        // print_r($entry);
-        // echo "<br>";
-        $single_transaction = implode($entry,',');
-        list($jettison,$branch,$tail_number,$acft_type,$unit,$dodaac,$command,$callsign,$pounds,$gallons,$country)=explode(',',$single_transaction);
-        //
-        $insert_query = "INSERT INTO transactions (TRANSACTION_ID,MISSION_NUMBER,JETTISON,TAIL_NUMBER,BRANCH,ACFT_TYPE,UNIT,DODAAC,COMMAND,CALLSIGN,POUNDS_DELIVERED,TOTAL_GALLONS,FMS_COUNTRY)";
-        $insert_query .= "VALUES ('','{$mission_number}','{$jettison}','{$tail_number}','{$branch}','{$acft_type}','{$unit}','{$dodaac}','{$command}','{$callsign}','{$pounds}','{$gallons}','{$country}');";
-        //
-        $tx_transaction = mysqli_query($conn,$insert_query);
-          if($tx_transaction)
-          {
-            echo "[*] Records updated";
-          }
-          else {
-            echo "[!] Query failed [!]";
-            echo "<script> alert('QUERY FAILED') </script>";
-          }
-
-
-      }
-    }
-
-    SubmitTransactionEntries($parsed_transactions,$mission_number,$conn);
-
+  header('Location: mission_entry.php');
     /*
     Transaction Data Table Fields
     -----------------------------
@@ -139,9 +144,5 @@
     JULIAN_DATE
     FUEL_TYPE
     */
-  }
-  else {
-    echo "ERROR";
-  }
 
 ?>

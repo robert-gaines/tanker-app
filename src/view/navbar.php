@@ -44,15 +44,18 @@
    <li class="nav-item dropdown">
     <a class="nav-link" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown">View</a>
     <div class="dropdown-menu">
-      <a class="dropdown-item" href="#">Mission Data</a>
+      <a class="dropdown-item" href="../model/view_missions.php">Mission Data</a>
+      <a class="dropdown-item" href="../model/view_boom_oprs.php">Boom Operators</a>
       <a class="dropdown-item" href="../model/view_aircraft.php">Aircraft</a>
-      <a class="dropdown-item" href="#">WRDCO</a>
+      <a class="dropdown-item" href="../model/view_wrdco.php">WRDCO</a>
+      <a class="dropdown-item" href="../model/view_users.php">Users</a>
     </div>
    </li>
    <li class="nav-item dropdown">
     <a class="nav-link" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown">Export</a>
     <div class="dropdown-menu">
-      <a class="dropdown-item" href="../control/export_select.php">Mission Data</a>
+      <a class="dropdown-item" href="../control/export_select_pdf.php">Mission Data - DD791 - PDF</a>
+      <a class="dropdown-item" href="../control/export_select_email.php">Mission Data - DD791 - Email</a>
     </div>
    </li>
    <li class="nav-item dropdown">

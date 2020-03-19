@@ -9,6 +9,7 @@
   <script src="../../style/bootstrap/dist/js/bootstrap.js"></script>
   <?php session_start() ?>
   <?php include('../../db/dbconnect.php') ?>
+  <?php error_reporting(0);                   ?>
   <style media="screen">
 
   body,html

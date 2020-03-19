@@ -12,6 +12,7 @@
   <?php session_start() ?>
   <?php include('../control/session_checker.php'); ?>
   <?php include('../../db/dbconnect.php') ?>
+  <?php error_reporting(0);                   ?>
   <?php
     if(isset($_SESSION['valid_admin']))
     {
@@ -35,7 +36,7 @@
   .table
   {
     background-color: lightgray;
-    max-width: 90%;
+    max-width: 75%;
     max-height: 500px;
     overflow-x: scroll;
     overflow-y: scroll;
