@@ -4,8 +4,16 @@
 
   include('../../db/dbconnect.php');
 
+  use PHPMailer\PHPMailer\PHPMailer;
+  use PHPMailer\PHPMailer\Exception;
+
+  require '../../PHPMailer/src/Exception.php';
+  require '../../PHPMailer/src/PHPMailer.php';
+  require '../../PHPMailer/src/SMTP.php';
+
   if(isset($_POST['mission_number']))
   {
+    $email          = $_POST['wrdco'];
     $mission_number = $_POST['mission_number'];
     $tail_number    = $_POST['tail_number'];
     $unit           = $_POST['unit'];
@@ -19,7 +27,7 @@
   {
     echo "<script> alert('Error') </script>";
   }
-  $fileName  = "DD791";
+  $fileName  = "DD791.pdf";
   $transaction_array = array();
   $report_data_query = "SELECT * FROM transactions WHERE MISSION_NUMBER='{$mission_number}';";
   $tx_report_data_query = mysqli_query($conn,$report_data_query);
@@ -237,6 +245,13 @@
     }
   }
 
+  date_default_timezone_set("America/Los_Angeles");
+  $day = date("Y-m-d");
+  $time = date("h:i:sa");
+  $fileName        = "../../export/DD791/DD791_".$mission_number."_".$day.'_'.$time.'.pdf';
+  $fileName        = str_replace(':','_',$fileName);
+  $segments        = explode('/',$fileName);
+  $docName         =  $segments[count($segments)-1];
   $pdf = new PDF();
 
   $pdf->SetFont('Arial','B',12);
@@ -245,6 +260,34 @@
 
   $pdf->CreateTable($mission_number,$dodaac,$unit,$home_station,$country,$mission_date,$type,$tail_number,$fuel_type,$boom_operator,$transaction_array);
 
-  $pdf->Output();
+  $pdf->Output($fileName,'F');
+
+  $mail = new PHPMailer;
+
+  $mail->isSMTP();
+  $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+  $mail->Host = 'smtp.gmail.com';
+  $mail->Port = 587;
+  $mail->SMTPAuth = true;
+  $mail->Username = 'tode.mailer@gmail.com';
+  $mail->Password = 'YkUB7a8Tfzj9AJ4';
+  $mail->SMTPSecure = 'tls';
+  $mail->From = 'tode.mailer@gmail.com';
+  $mail->FromName = 'TODE Appllication Mailer';
+  $mail->addAddress($email, 'Recipient');
+  $mail->WordWrap = 50;
+  $mail->isHTML(true);
+  $mail->AddAttachment($fileName);
+  $mail->Subject = "Exported Form: ".$docName;
+  $mail->Body    = '<b> Please Find Attached the Exported DD791 - Tanker Application Mailer</b>';
+  $mail->send();
+  // if(!$mail->send()) {
+  //     echo 'Message could not be sent.';
+  //     echo 'Mailer Error: ' . $mail->ErrorInfo;
+  // } else {
+  //     echo 'Message has been sent';
+  // }
+
+  header('Location: export_select_email.php');
 
  ?>

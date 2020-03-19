@@ -28,7 +28,7 @@
 <body>
 <nav class="navbar navbar-expand-md bg-dark navbar-dark">
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
-    <span><img src="#" alt="#"></span>
+    <img class="fa fa-plane" alt="#">
   </button>
   <div class="collapse navbar-collapse" id="collapsibleNavbar">
     <ul class="navbar-nav mx-auto">
@@ -45,9 +45,7 @@
     <a class="nav-link" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown">View</a>
     <div class="dropdown-menu">
       <a class="dropdown-item" href="#">Mission Data</a>
-      <a class="dropdown-item" href="../model/view_boom_oprs.php">Boom Operators</a>
       <a class="dropdown-item" href="../model/view_aircraft.php">Aircraft</a>
-      <a class="dropdown-item" href="../model/view_users.php">Users</a>
       <a class="dropdown-item" href="#">WRDCO</a>
     </div>
    </li>
@@ -55,8 +53,6 @@
     <a class="nav-link" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown">Export</a>
     <div class="dropdown-menu">
       <a class="dropdown-item" href="../control/export_select.php">Mission Data</a>
-      <a class="dropdown-item" href="#">Boom Operators</a>
-      <a class="dropdown-item" href="#">WRDCO Data</a>
     </div>
    </li>
    <li class="nav-item dropdown">

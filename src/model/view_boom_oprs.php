@@ -11,15 +11,37 @@
   <link rel="stylesheet" href="../../style/custom/dynamic_form.css">
   <?php session_start() ?>
   <?php include('../control/session_checker.php'); ?>
-  <?php  include('../view/navbar.php')  ?>
   <?php include('../../db/dbconnect.php') ?>
+  <?php
+    if(isset($_SESSION['valid_admin']))
+    {
+      include_once('../view/admin-navbar.php');
+    }
+    else if(!($_SESSION['valid_admin']))
+    {
+      include_once('../view/navbar.php');
+    }
+    else {
+      include_once('../view/navbar.php');
+    }
+   ?>
   <style media="screen">
+
+  body,form
+  {
+    background-color: gray;
+  }
 
   .table
   {
-    width: 90%;
-    overflow-x: scroll;
-    overflow-y: scroll;
+    background-color: lightgray;
+  }
+
+  th
+  {
+  position: sticky;
+  top: 0px;
+  background: white;
   }
 
   </style>
@@ -31,7 +53,7 @@
   $tx_boom_query = mysqli_query($conn,$user_query);
  ?>
 
-<form class="" action="#" method="post">
+<form class="overflow-auto col-sm-8 mx-auto" action="#" method="post">
   <div class="form-group">
     <table class="table table-bordered table-hover table-sm text-center mx-auto">
       <thead>

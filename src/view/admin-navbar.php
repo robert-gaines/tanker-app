@@ -18,7 +18,6 @@
                 background-color: lightgray;
             }
 
-
         .icon-bar {
             width: 100px; /* Set a specific width */
             height: 500px;
@@ -45,7 +44,7 @@
 <body>
 <nav class="navbar navbar-expand-md bg-dark navbar-dark">
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
-    <span class="icon-bar"><i class="fa fa-place"></i></span>
+    <i class="fa fa-plane"></i>
   </button>
   <div class="collapse navbar-collapse" id="collapsibleNavbar">
     <ul class="navbar-nav mx-auto">
@@ -61,27 +60,25 @@
    <li class="nav-item dropdown">
     <a class="nav-link" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown">View</a>
     <div class="dropdown-menu">
-      <a class="dropdown-item" href="#">Mission Data</a>
+      <a class="dropdown-item" href="../model/view_missions.php">Mission Data</a>
       <a class="dropdown-item" href="../model/view_boom_oprs.php">Boom Operators</a>
       <a class="dropdown-item" href="../model/view_aircraft.php">Aircraft</a>
-      <a class="dropdown-item" href="#">WRDCO</a>
-      <a class="dropdown-item" href="../model/view_users">Users</a>
+      <a class="dropdown-item" href="../model/view_wrdco.php">WRDCO</a>
+      <a class="dropdown-item" href="../model/view_users.php">Users</a>
     </div>
    </li>
    <li class="nav-item dropdown">
     <a class="nav-link" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown">Export</a>
     <div class="dropdown-menu">
-      <a class="dropdown-item" href="../control/export_select.php">Mission Data</a>
-      <a class="dropdown-item" href="#">Boom Operators</a>
-      <a class="dropdown-item" href="#">WRDCO Data</a>
+      <a class="dropdown-item" href="../control/export_select_pdf.php">Mission Data - DD791 - PDF</a>
+      <a class="dropdown-item" href="../control/export_select_email.php">Mission Data - DD791 - Email</a>
     </div>
    </li>
    <li class="nav-item dropdown">
     <a class="nav-link" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown">Identity</a>
     <div class="dropdown-menu">
       <a class="dropdown-item" href="../admin/add_user.php">Add User</a>
-      <a class="dropdown-item" href="../model/view_users.php">View Users</a>
-      <a class="dropdown-item" href="#">Edit/Remove User</a>
+      <a class="dropdown-item" href="../admin/manage_users.php">Manage Users</a>
     </div>
    </li>
    <li class="nav-item">

@@ -26,7 +26,7 @@
 
   body
   {
-    background-color: #333;
+    background-color: gray;
   }
 
   .custom-container

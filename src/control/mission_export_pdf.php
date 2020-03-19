@@ -19,9 +19,12 @@
   {
     echo "<script> alert('Error') </script>";
   }
-  $fileName  = "DD791";
-  $transaction_array = array();
-  $report_data_query = "SELECT * FROM transactions WHERE MISSION_NUMBER='{$mission_number}';";
+  date_default_timezone_set("America/Los_Angeles");
+  $day                  = date("Y-m-d");
+  $time                 = date("h:i:sa");
+  $fileName             = "DD791_".$mission_number."_".$day.'_'.$time.'.pdf';
+  $transaction_array    = array();
+  $report_data_query    = "SELECT * FROM transactions WHERE MISSION_NUMBER='{$mission_number}';";
   $tx_report_data_query = mysqli_query($conn,$report_data_query);
 
   while($row = mysqli_fetch_assoc($tx_report_data_query))
@@ -241,12 +244,12 @@
 
   $pdf->SetFont('Arial','B',12);
 
+  $pdf->SetTitle($fileName);
+
   $pdf->AddPage();
 
   $pdf->CreateTable($mission_number,$dodaac,$unit,$home_station,$country,$mission_date,$type,$tail_number,$fuel_type,$boom_operator,$transaction_array);
 
-  $pdf->Output();
-
-  $pdf->Output('D',$fileName);
+  $pdf->Output('I',$fileName);
 
  ?>

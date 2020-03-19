@@ -4,36 +4,72 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Review Missions</title>
+  <title>Export Missions - Email</title>
   <link rel="stylesheet" href="../../style/bootstrap/dist/css/bootstrap.css">
   <script src="../../style/bootstrap/dist/js/bootstrap.js"></script>
-  <link rel="stylesheet" href="../../style/custom/custom.css">
-  <link rel="stylesheet" href="../../style/custom/dynamic_form.css">
   <?php session_start() ?>
   <?php include('session_checker.php'); ?>
-  <?php  include('../view/navbar.php')  ?>
   <?php include('../../db/dbconnect.php') ?>
   <style media="screen">
 
-  .table
+  body,html
   {
-    width: 90%;
-    overflow-x: scroll;
-    overflow-y: scroll;
+    background-color: gray;
+  }
+
+  .table,thead,tbody
+  {
+    background-color: lightgray;
+  }
+
+  th
+  {
+  position: sticky;
+  top: 0px;
+  background: white;
   }
 
   </style>
 </head>
 <body>
 
+  <?php
+    if(isset($_SESSION['valid_admin']))
+    {
+      include_once('../view/admin-navbar.php');
+    }
+    else if(!($_SESSION['valid_admin']))
+    {
+      include_once('../view/navbar.php');
+    }
+    else {
+      include_once('../view/navbar.php');
+    }
+   ?>
+
 <?php
   $mission_query = "SELECT * FROM mission_data";
   $tx_mission_query = mysqli_query($conn,$mission_query);
+  $wrdco_query = "SELECT EMAIL FROM wrdco";
+  $tx_wrdco_query = mysqli_query($conn,$wrdco_query);
  ?>
 
-<form class="" action="mission_export.php" method="post">
-  <div class="form-group">
-    <table class="table table-bordered table-hover table-sm text-center mx-auto">
+<form class="col-sm-12 mx-auto overflow-auto" action="mission_export_email.php" method="post" style="background-color: gray; margin-top: 0;">
+  <div class="form-group mx-auto text-center" style="background-color: gray; margin-top: 20px;">
+    <?php
+    echo "<select class='form-control-sm mb-2 mx-auto text-center' name='wrdco' id='wrdco' required>";
+    echo "<option value='' disabled selected hidden> WRDCO </option>";
+    while($row = mysqli_fetch_assoc($tx_wrdco_query))
+    {
+      foreach($row as $entry => $value)
+      {
+        echo "<option value='{$value}'>$value</option>";
+      }
+    }
+    echo "</select>";
+    ?>
+  </div>
+    <table class="table table-bordered table-hover table-sm text-center mx-auto overflow-auto">
       <thead>
         <th>Mission Number</th>
         <th>Tail Number</th>
@@ -42,7 +78,7 @@
         <th>Command</th>
         <th>Boom Operator</th>
         <th>Transaction Date</th>
-        <th>Export</th>
+        <th>Email</th>
       </thead>
       <tbody>
        <?php
@@ -65,13 +101,12 @@
           echo "<td><input name='boom_operator' type='hidden' value='{$boom_operator}'/>$boom_operator</td>";
           echo "<td><input name='mission_date' type='hidden' value='{$date}'/>$date</td>";
           echo "<input name='fuel_type' type='hidden' value='{$fuel_type}'/>";
-          echo "<td><button type='submit' class='btn btn-warning' value='{$mission_number}' name='mission_number'>Export</button></td>";
+          echo "<td><button type='submit' class='btn btn-warning' value='{$mission_number}' name='mission_number'>Email</button></td>";
           echo "</tr>";
         }
         ?>
       </tbody>
     </table>
-  </div>
 </form>
 
 </body>

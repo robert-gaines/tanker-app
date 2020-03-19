@@ -11,15 +11,45 @@
   <link rel="stylesheet" href="../../style/custom/dynamic_form.css">
   <?php session_start() ?>
   <?php include('../control/session_checker.php'); ?>
-  <?php include('../view/navbar.php')  ?>
   <?php include('../../db/dbconnect.php') ?>
+  <?php
+    if(isset($_SESSION['valid_admin']))
+    {
+      include_once('../view/admin-navbar.php');
+    }
+    else if(!($_SESSION['valid_admin']))
+    {
+      include_once('../view/navbar.php');
+    }
+    else {
+      include_once('../view/navbar.php');
+    }
+   ?>
   <style media="screen">
+
+  body
+  {
+    background-color: gray;
+  }
+
+  form
+  {
+    max-width: 75%;
+    background-color: gray;
+  }
 
   .table
   {
-    width: 90%;
-    overflow-x: scroll;
-    overflow-y: scroll;
+    background-color: lightgray;
+    max-width: 75%;
+    max-height: 500px;
+  }
+
+  th
+  {
+  position: sticky;
+  top: 0px;
+  background: white;
   }
 
   </style>
@@ -28,12 +58,11 @@
 
 <?php
   $acft_query = "SELECT * FROM acft_data";
-  $tx_mission_query = mysqli_query($conn,$acft_query);
+  $tx_acft_query = mysqli_query($conn,$acft_query);
  ?>
 
-<form class="" action="#" method="post">
-  <div class="form-group">
-    <table class="table table-bordered table-hover table-sm text-center mx-auto">
+<form class="mx-auto" action="#" method="post">
+    <table class="table table-bordered table-responsive table-hover table-sm text-center mx-auto overflow-auto;">
       <thead>
         <th>Tail #</th>
         <th>Type</th>
@@ -44,7 +73,7 @@
       </thead>
       <tbody>
        <?php
-        while($row = mysqli_fetch_assoc($tx_mission_query))
+        while($row = mysqli_fetch_assoc($tx_acft_query))
         {
           $acft_type      = $row['ACFT_TYPE'];
           $tail_number    = $row['TAILNUMBER'];
@@ -64,7 +93,6 @@
         ?>
       </tbody>
     </table>
-  </div>
 </form>
 
 </body>

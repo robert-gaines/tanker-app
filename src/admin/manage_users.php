@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>View Users</title>
+  <title>Manage Users</title>
   <link rel="stylesheet" href="../../style/bootstrap/dist/css/bootstrap.css">
   <script src="../../style/bootstrap/dist/js/bootstrap.js"></script>
   <link rel="stylesheet" href="../../style/custom/custom.css">
@@ -34,7 +34,7 @@
 
   .table
   {
-    max-width: 75%;
+    width: 90%;
     background-color: lightgray;
   }
 
@@ -63,6 +63,10 @@
         <th>Last Name</th>
         <th>Username</th>
         <th>Status</th>
+        <th>Enable</th>
+        <th>Disable</th>
+        <th>Edit</th>
+        <th>Delete</th>
       </thead>
       <tbody>
        <?php
@@ -81,6 +85,10 @@
           echo "<td><input name='user_last' type='hidden' value='{$user_last}'/>$user_last</td>";
           echo "<td><input name='user_name' type='hidden' value='{$user_name}'/>$user_name</td>";
           echo "<td><input name='status' type='hidden' value='{$status}'/>$status</td>";
+          echo "<td><button type='submit' class='btn btn-success btn-block' value='{$user_id}' name='user_id_enable'>Enable</button></td>";
+          echo "<td><button type='submit' class='btn btn-dark btn-block' value='{$user_id}' name='user_id_disable'>Disable</button></td>";
+          echo "<td><button type='submit' class='btn btn-warning btn-block' value='{$user_id}' name='user_id_edit'>Edit</button></td>";
+          echo "<td><button type='submit' class='btn btn-danger btn-block' value='{$user_id}' name='user_id_delete'>Delete</button></td>";
           echo "</tr>";
         }
         ?>

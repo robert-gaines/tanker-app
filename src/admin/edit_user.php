@@ -4,14 +4,38 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Add User</title>
+  <title>Edit User</title>
   <link rel="stylesheet" href="../../style/bootstrap/dist/css/bootstrap.css">
   <script src="../../style/bootstrap/dist/js/bootstrap.js"></script>
   <?php session_start()                       ?>
   <?php include('session_checker_admin.php'); ?>
   <?php include('../view/admin-navbar.php');  ?>
   <?php include('../../db/dbconnect.php');    ?>
-  <?php error_reporting(0);                   ?>
+  <?php error_reporting(0); ?>
+  <?php
+
+    $user_id  = $_SESSION['user_id'];
+    $query    = "SELECT * FROM users WHERE USER_ID={$user_id}";
+    $tx_query = mysqli_query($conn,$query);
+
+    while($row = mysqli_fetch_assoc($tx_query))
+    {
+      $first_name  = $row['USER_FIRST'];
+      $last_name   = $row['USER_LAST'];
+      $user_rank   = $row['USER_RANK'];
+      $user_name   = $row['USER_NAME'];
+      $description = $row['DESCRIPTION'];
+      $admin       = $row['ISADMIN'];
+      $boom        = $row['IS_BOOM'];
+      if($boom == '')
+      {
+        $boom = 'Other User';
+      }
+      $status      = $row['IS_INACTIVE'];
+      $password    = $row['USER_PASS'];
+    }
+
+   ?>
   <style media="screen">
 
     h5
@@ -40,17 +64,17 @@
 
    <div>
     <form class="mx-auto col-sm-8" action="#" method="post">
-      <h5 class="mx-auto text-center">User Registration</h5>
+      <h5 class="mx-auto text-center">User Account Editing</h5>
       <hr>
      <div class="form-group text-center">
-       <input class="form-control-lg text-center col-sm-4" type="text" name="user_first" value="" placeholder="First Name" required>
+       <input class="form-control-lg text-center col-sm-4" type="text" name="user_first" value="<?php echo $first_name ?>" required>
      </div>
      <div class="form-group text-center">
-       <input class="form-control-lg text-center col-sm-4" type="text" name="user_last" value="" placeholder="Last Name" required>
+       <input class="form-control-lg text-center col-sm-4" type="text" name="user_last" value="<?php echo $last_name ?>" required>
      </div>
      <div class="form-group text-center">
        <select class="form-group form-control-lg col-sm-4 text-center" name="user_rank" required>
-         <option value=""disabled selected>Rank</option>
+         <?php echo "<option value='$user_rank' selected>$user_rank</option>" ?>
          <option value="AB">AB</option>
          <option value="A1C">A1C</option>
          <option value="SrA">SrA</option>
@@ -75,40 +99,40 @@
      </div>
      <div class="form-group text-center">
        <select class="form-group form-control-lg text-center col-sm-4" name="is_boom_opr" required>
-         <option value=""disabled selected hidden>Boom Operator?</option>
+         <?php echo "<option value='$boom' selected>$boom</option>" ?>
          <option value="boom">Boom Operator</option>
          <option value="non-boom">Other User</option>
        </select>
      </div>
      <div class="from-group text-center" style="margin-bottom: 5px;">
        <select class="form-group form-control-lg col-sm-4 text-center" name="isAdmin" required>
-        <option value="" hidden disabled selected>Administrator?</option>
+        <?php echo "<option value='$admin' selected>$admin</option>" ?>
         <option value="administrator">Administrator</option>
         <option value="non-administrator">Non-Administrator</option>
        </select>
      </div>
      <div class="form-group text-center" style="margin-top: -5px;">
-       <input class="form-control-lg text-center col-sm-4" type="text" name="description" value="" placeholder="Description" required>
+       <input class="form-control-lg text-center col-sm-4" type="text" name="description" value="<?php echo $description ?>" required>
      </div>
      <div class="form-group text-center" style="margin-top: -5px;">
-       <input class="form-group form-control-lg col-sm-4 text-center" type="text" name="user_name" value="" placeholder="User Name" required>
+       <input class="form-group form-control-lg col-sm-4 text-center" type="text" name="user_name" value="<?php echo $user_name ?>" required>
      </div>
      <div class="form-group text-center" style="margin-top: -15px;">
-       <input class="form-control-lg text-center col-sm-4" type="password" name="user_pass" value="" placeholder="Enter a Password" required>
+       <input class="form-control-lg text-center col-sm-4" type="password" name="user_pass" value="<?php echo $password ?>" placeholder="Enter a Password" required>
      </div>
      <div class="form-group text-center" style="margin-top: 5px;">
-       <input class="form-control-lg text-center col-sm-4" type="password" name="user_pass_two" value="" placeholder="Re-enter Password" required>
+       <input class="form-control-lg text-center col-sm-4" type="password" name="user_pass_two" value="<?php echo $password ?>" placeholder="Re-enter Password" required>
      </div>
      <div class="from-group text-center">
        <select class="form-group form-control-lg col-sm-4 text-center" name="status" required>
-        <option value="" hidden disabled selected>Status</option>
+        <?php echo "<option value='$status' selected>$status</option>" ?>
         <option value="active">Active</option>
         <option value="inactive">Inactive</option>
        </select>
      </div>
      <div class="form-group text-center" style="margin-top: 10px;">
        <button type="reset" class="btn btn-danger col-sm-3"> Reset </button>
-       <button type="submit" class="btn btn-primary col-sm-3" name="add">Submit</button>
+       <button type="submit" class="btn btn-primary col-sm-3" name="update">Submit</button>
        <br><br><br>
      </div>
    </div>
@@ -161,32 +185,40 @@
       }
     }
 
-    if(isset($_POST['add']))
+    if(isset($_POST['update']))
     {
       if(StrengthChecker($_POST['user_pass']) && PasswordCheck($_POST['user_pass'],$_POST['user_pass_two']))
       {
-        $user_first       = $_POST['user_first'];
-        $user_last        = $_POST['user_last'];
-        $user_rank        = $_POST['user_rank'];
-        $user_pass        = $_POST['user_pass'];
-        $user_name        = $_POST['user_name'];
-        $user_pass        = password_hash($user_pass, PASSWORD_BCRYPT);
-        $user_description = $_POST['description'];
-        $admin            = $_POST['isAdmin'];
-        $is_boom          = $_POST['is_boom_ops'];
-        $status           = $_POST['status'];
-
-        $add_query  = "INSERT INTO users (USER_ID,USER_FIRST,USER_LAST,USER_RANK,USER_NAME,DESCRIPTION,ISADMIN,IS_BOOM,USER_PASS,IS_INACTIVE)";
-        $add_query .= "VALUES('','{$user_first}','{$user_last}','{$user_rank}','{$user_name}','{$user_description}','{$admin}','{$is_boom}','{$user_pass}','{$status}');";
-        $tx_add_query = mysqli_query($conn,$add_query);
-
-        if($tx_add_query)
+        $update_user_first       = $_POST['user_first'];
+        $update_user_last        = $_POST['user_last'];
+        $update_user_rank        = $_POST['user_rank'];
+        $update_user_name        = $_POST['user_name'];
+        //
+        if($password !== $update_user_pass)
         {
-          echo "<script> alert('User Added')</script>";
+            $update_user_pass = password_hash($password, PASSWORD_BCRYPT);
         }
         else
         {
-          echo "<script> alert('ALERT: User was not added!')</script>";
+           $update_user_pass = $password;
+        }
+        $update_user_description = $_POST['description'];
+        $update_admin            = $_POST['isAdmin'];
+        $update_is_boom          = $_POST['is_boom_opr'];
+        $update_status           = $_POST['status'];
+
+        $update_query =  "UPDATE users";
+        $update_query .= " SET USER_FIRST='{$update_user_first}',USER_LAST='{$update_user_last}',USER_RANK='{$update_user_rank}',USER_NAME='{$update_user_name}',DESCRIPTION='{$update_user_description}',ISADMIN='{$update_admin}',IS_BOOM='{$update_is_boom}',USER_PASS='{$update_user_pass}',IS_INACTIVE='{$update_status}'";
+        $update_query .= " WHERE USER_NAME='{$user_name}';";
+        $tx_update_query = mysqli_query($conn,$update_query);
+
+        if($tx_update_query)
+        {
+          echo "<script> alert('User Account Updated')</script>";
+        }
+        else
+        {
+          echo "<script> alert('ALERT: User account was not updated!')</script>";
         }
       }
       else
@@ -199,11 +231,7 @@
         echo "<script> alert('$var')</script>";
       }
     }
-    else
-    {
-      //echo "<script> alert('Error!') </script>";
-    }
-
    ?>
+
  </body>
 </html>
