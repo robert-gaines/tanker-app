@@ -388,8 +388,8 @@ $(document).ready(function() {
             markup += '<input class="form-control-sm mb-2 col-sm-1 text-center" style="margin-left: -10px; margin-right: 15px;" type="text" name="dodaac[]" placeholder="DODAAC"/>' /* DODAAC */
             markup += '<input class="form-control-sm mb-2 col-sm-1 text-center" style="margin-left: -10px; margin-right: 15px;" type="text" name="command[]" placeholder="Command"/>' /* Command */
             markup += '<input class="form-control-sm mb-2 col-sm-1 text-center" style="margin-left: -10px; margin-right: 15px;" type="text" name="callsign[]" placeholder="Callsign"/>' /* Callsign */
-            markup += '<input class="form-control-sm mb-2 col-sm-1 text-center" style="margin-left: -10px; margin-right: 15px;" type="text" name="lbs[]" placeholder="Lbs. Delivered"/>' /* Pounds Delivered*/
-            markup += '<input class="form-control-sm mb-2 col-sm-1 text-center" style="margin-left: -10px; margin-right: 15px;" type="text" name="gallons[]" placeholder="Gallons"/>' /* Gallons */
+            markup += '<input class="form-control-sm mb-2 col-sm-1 text-center" style="margin-left: -10px; margin-right: 15px;" type="text" name="lbs[]" placeholder="Lbs. Delivered" required />' /* Pounds Delivered*/
+            markup += '<input class="form-control-sm mb-2 col-sm-1 text-center" style="margin-left: -10px; margin-right: 15px;" type="text" name="gallons[]" placeholder="Gallons" required />' /* Gallons */
             markup += '<input class="form-control-sm mb-2 col-sm-1 text-center" style="margin-left: -10px; margin-right: 15px;" type="text" name="country[]" placeholder="Country"/>' /* FMS/Country */
             markup += '<a href="#" class="delete btn btn-danger">X</a></div>'
             $(wrapper).append(markup);

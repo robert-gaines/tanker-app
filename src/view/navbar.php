@@ -20,7 +20,7 @@
 
         .dropdown-menu
         {
-          background-color: lightgray;
+           background-color: lightgray;
         }
 
     </style>
@@ -28,7 +28,7 @@
 <body>
 <nav class="navbar navbar-expand-md bg-dark navbar-dark">
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
-    <img class="fa fa-plane" alt="#">
+    <i class="fa fa-plane"></i>
   </button>
   <div class="collapse navbar-collapse" id="collapsibleNavbar">
     <ul class="navbar-nav mx-auto">
@@ -38,7 +38,7 @@
    <li class="nav-item dropdown">
     <a class="nav-link" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown">Submit</a>
     <div class="dropdown-menu">
-      <a class="dropdown-item" href="../control/mission_entry.php">Mission Data</a>
+      <a class="dropdown-item" href="../control/mission_entry.php">Mission Data - DD 791</a>
     </div>
   </li>
    <li class="nav-item dropdown">

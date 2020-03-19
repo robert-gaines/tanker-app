@@ -54,7 +54,7 @@
    <li class="nav-item dropdown">
     <a class="nav-link" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown">Submit</a>
     <div class="dropdown-menu">
-      <a class="dropdown-item" href="../control/mission_entry.php">Mission Data</a>
+      <a class="dropdown-item" href="../control/mission_entry.php">Mission Data - DD 791</a>
     </div>
   </li>
    <li class="nav-item dropdown">
