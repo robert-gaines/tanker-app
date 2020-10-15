@@ -85,5 +85,42 @@
 // $segments        = explode('/',$fileName);
 // print_r($segments);
 // echo $segments[count($segments)-1];
+  
+  
+  use PHPMailer\PHPMailer\PHPMailer;
+  use PHPMailer\PHPMailer\Exception;
+
+  require '../../PHPMailer/src/Exception.php';
+  require '../../PHPMailer/src/PHPMailer.php';
+  require '../../PHPMailer/src/SMTP.php';
+
+	$fileName = "../../export/DD791/DD791_AB4511_2020-03-19_07_00_43am.pdf";
+
+  $mail = new PHPMailer;
+  $mail->SMTPDebug = 4;
+  $mail->isSMTP();
+  $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+  $mail->Host = 'smtp.gmail.com';
+  $mail->Port = 587;
+  $mail->SMTPAuth = true;
+  $mail->Username = 'tode.mailer@gmail.com';
+  $mail->Password = 'YkUB7a8Tfzj9AJ4';
+  $mail->SMTPSecure = 'tls';
+  $mail->From = 'tode.mailer@gmail.com';
+  $mail->FromName = 'TODE Appllication Mailer';
+  $mail->addAddress('robert.gaines@protonmail.com', 'Recipient');
+  $mail->WordWrap = 50;
+  $mail->isHTML(true);
+  $mail->AddAttachment($fileName);
+  $mail->Subject = "Exported Form: ";
+  $mail->Body    = '<b> Please Find Attached the Exported DD791 - Tanker Application Mailer</b>';
+  $mail->send();
+  if(!$mail->send()) {
+       echo 'Message could not be sent.';
+       echo 'Mailer Error: ' . $mail->ErrorInfo;
+   } else {
+       echo 'Message has been sent';
+   }
+
 
 ?>

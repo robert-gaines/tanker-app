@@ -176,8 +176,8 @@
         $is_boom          = $_POST['is_boom_ops'];
         $status           = $_POST['status'];
 
-        $add_query  = "INSERT INTO users (USER_ID,USER_FIRST,USER_LAST,USER_RANK,USER_NAME,DESCRIPTION,ISADMIN,IS_BOOM,USER_PASS,IS_INACTIVE)";
-        $add_query .= "VALUES('','{$user_first}','{$user_last}','{$user_rank}','{$user_name}','{$user_description}','{$admin}','{$is_boom}','{$user_pass}','{$status}');";
+        $add_query  = "INSERT INTO USERS (USER_ID,USER_FIRST,USER_LAST,USER_RANK,USER_NAME,DESCRIPTION,ISADMIN,IS_BOOM,USER_PASS,IS_INACTIVE)";
+        $add_query .= "VALUES(DEFAULT,'{$user_first}','{$user_last}','{$user_rank}','{$user_name}','{$user_description}','{$admin}','{$is_boom}','{$user_pass}','{$status}');";
         $tx_add_query = mysqli_query($conn,$add_query);
 
         if($tx_add_query)

@@ -6,20 +6,20 @@
 
   function EnableUser($conn,$user_id)
   {
-    $query    = "UPDATE users SET IS_INACTIVE='active' WHERE USER_ID='{$user_id}';";
+    $query    = "UPDATE USERS SET IS_INACTIVE='active' WHERE USER_ID='{$user_id}';";
     $tx_query = mysqli_query($conn,$query);
     echo $query;
   }
 
   function DisableUser($conn,$user_id)
   {
-    $query    = "UPDATE users SET IS_INACTIVE='inactive' WHERE USER_ID='{$user_id}';";
+    $query    = "UPDATE USERS SET IS_INACTIVE='inactive' WHERE USER_ID='{$user_id}';";
     $tx_query = mysqli_query($conn,$query);
   }
 
   function DeleteUser($conn,$user_id)
   {
-    $query    = "DELETE FROM users where USER_ID='{$user_id}';";
+    $query    = "DELETE FROM USERS WHERE USER_ID='{$user_id}';";
     $tx_query = mysqli_query($conn,$query);
   }
 

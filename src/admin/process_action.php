@@ -163,7 +163,7 @@
                                                      CMD,
                                                      DODAAC,
                                                      LOCATION)
-                                            VALUES ('',
+                                            VALUES (DEFAULT,
                                               '{$ac_country}',
                                               '{$ac_type}',
                                               '{$ac_tail}',
@@ -213,7 +213,7 @@
           -> COMMERCIAL
           -> EMAIL
       */
-      $insert_query = "INSERT INTO wrdco ( WRDCO_ID,
+      $insert_query = "INSERT INTO WRDCO ( WRDCO_ID,
                                            CUST_DODAAC,
                                            EBS_DODAAC,
                                            MDS,
@@ -226,7 +226,7 @@
                                            DSN,
                                            COMMERCIAL,
                                            EMAIL)
-                                      VALUES ('',
+                                      VALUES (DEFAULT,
                                         '{$customer_dodaac}',
                                         '{$ebs_dodaac}',
                                         '{$mds}',
@@ -252,7 +252,7 @@
     $fileName        = "../../export/access_logs_exported_".$day.'_'.$time.'.csv';
     $fileName        = str_replace(':','_',$fileName);
     $fileObject      = fopen($fileName,'w');
-    $export_query    = "SELECT * FROM access_data";
+    $export_query    = "SELECT * FROM ACCESS_DATA";
     $tx_export_query = mysqli_query($conn,$export_query);
     while($row = mysqli_fetch_assoc($tx_export_query))
     {
@@ -264,12 +264,12 @@
   function ExportDatabase($conn,$day,$time)
   {
     $tableNames = array(
-                        "access_data",
-                        "acft_data",
-                        "mission_data",
-                        "transactions",
-                        "users",
-                        "wrdco"
+                        "ACCESS_DATA",
+                        "ACFT_DATA",
+                        "MISSION_DATA",
+                        "TRANSACTIONS",
+                        "USERS",
+                        "WRDCO"
                        );
     foreach($tableNames as $t)
     {
@@ -288,8 +288,8 @@
   function PurgeDatabase($conn)
   {
     $tableNames = array(
-                        "acft_data",
-                        "wrdco"
+                        "ACFT_DATA",
+                        "WRDCO"
                        );
     foreach($tableNames as $t)
     {
@@ -301,7 +301,7 @@
   function PurgeAccessLogs($conn)
   {
     $tableNames = array(
-                        "access_data"
+                        "ACCESS_DATA"
                        );
     foreach($tableNames as $t)
     {

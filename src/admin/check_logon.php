@@ -67,7 +67,7 @@
     $username = $_POST['username'];
     $password = $_POST['password'];
     /* Query the user database */
-    $access_query    = "SELECT * FROM users WHERE USER_NAME='{$username}';";
+    $access_query    = "SELECT * FROM USERS WHERE USER_NAME='{$username}';";
     $tx_access_query = mysqli_query($conn,$access_query);
     /* Retrieve the user's data and parse it out */
     if($tx_access_query)
@@ -92,7 +92,7 @@
       }
       //
       $log_query = "INSERT INTO ACCESS_DATA(SESSION_ID,USER_NAME,USER_IP,SESSION_DATE,SESSION_TIME)";
-      $log_query .= "VALUES('','{$user_name}','{$visitor_ip}','{$day}','{$time}')";
+      $log_query .= "VALUES(DEFAULT,'{$user_name}','{$visitor_ip}','{$day}','{$time}')";
       //
       if(CheckCredentials($password,$user_pass) && CheckStatus($status))
       {

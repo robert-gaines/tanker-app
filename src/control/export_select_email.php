@@ -49,9 +49,9 @@
    ?>
 
 <?php
-  $mission_query = "SELECT * FROM mission_data";
+  $mission_query = "SELECT * FROM MISSION_DATA";
   $tx_mission_query = mysqli_query($conn,$mission_query);
-  $wrdco_query = "SELECT EMAIL FROM wrdco";
+  $wrdco_query = "SELECT EMAIL FROM WRDCO";
   $tx_wrdco_query = mysqli_query($conn,$wrdco_query);
  ?>
 

@@ -29,7 +29,7 @@
   }
   $fileName  = "DD791.pdf";
   $transaction_array = array();
-  $report_data_query = "SELECT * FROM transactions WHERE MISSION_NUMBER='{$mission_number}';";
+  $report_data_query = "SELECT * FROM TRANSACTIONS WHERE MISSION_NUMBER='{$mission_number}';";
   $tx_report_data_query = mysqli_query($conn,$report_data_query);
 
   while($row = mysqli_fetch_assoc($tx_report_data_query))
@@ -37,7 +37,7 @@
     array_push($transaction_array,$row);
   }
 
-  $ac_query = "SELECT * FROM acft_data WHERE TAILNUMBER='{$tail_number}';";
+  $ac_query = "SELECT * FROM ACFT_DATA WHERE TAILNUMBER='{$tail_number}';";
   $tx_ac_query = mysqli_query($conn,$ac_query);
 
   while($row = mysqli_fetch_assoc($tx_ac_query))
@@ -251,7 +251,7 @@
   $fileName        = "../../export/DD791/DD791_".$mission_number."_".$day.'_'.$time.'.pdf';
   $fileName        = str_replace(':','_',$fileName);
   $segments        = explode('/',$fileName);
-  $docName         =  $segments[count($segments)-1];
+  $docName         = $segments[count($segments)-1];
   $pdf = new PDF();
 
   $pdf->SetFont('Arial','B',12);
@@ -281,13 +281,12 @@
   $mail->Subject = "Exported Form: ".$docName;
   $mail->Body    = '<b> Please Find Attached the Exported DD791 - Tanker Application Mailer</b>';
   $mail->send();
-  // if(!$mail->send()) {
+  //if(!$mail->send()) {
   //     echo 'Message could not be sent.';
   //     echo 'Mailer Error: ' . $mail->ErrorInfo;
   // } else {
   //     echo 'Message has been sent';
   // }
-
   header('Location: export_select_email.php');
 
  ?>

@@ -3,8 +3,8 @@
   /* Establish a connection with the database */
 
   $host = "127.0.0.1";
-  $user = "root";
-  $pass = "";
+  $user = "phpmyadmin";
+  $pass = "P@ssw0rd!P@ssw0rd!";
   $db   = "tanker_app";
 
   $conn = mysqli_connect($host,$user,$pass,$db);

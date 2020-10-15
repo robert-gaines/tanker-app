@@ -1,0 +1,6 @@
+1,Site,Administrator,CIV,site.admin,"web registered user",administrator,non-boom,$2y$10$6sMkzLaLUn4le4g5UGsDOeW0irCHWzVi3qFEq7pkcjBiIFJWfk9he,active
+2,Typical,Airman,A1C,typical.airman,"web registered user",non-administrator,boom,$2y$10$yvzd4r3b3rxseuO32V6t1Om6NH1neRDBd64ClYiqVfj7X2hJ0x7uC,inactive
+3,Standard,User,SSgt,standard.user,"web registered user",non-administrator,boom,$2y$10$0B8T3B5qH1FQcSlHJEiMvOKA99NnfNewE/boDV5Xtv3GZ1ZlH064K,active
+4,Competent,Contractor,CIV,competent.contractor,"Alternate Administrator",non-administrator,,$2y$10$sbBPzatz6NV6XSL6gJlpE.sRWF.ARqqKuMlc.FbSCDrnCsS3HQ0ve,active
+5,"Malicious ",Actor,CIV,malicious.actor,"web registered user",non-administrator,non-boom,$2y$10$qIqc/k38XpbqIo8sbVh3UOEsPoNeC11H7q9I4iUg68ZxVmYCfgSKO,inactive
+7,Alternate,User,CPT,alternate.user,"web registered user",non-administrator,non-boom,$2y$10$toFr95JbkwHQB4Nyz4LlU.J4ZZcvRW1FQKMZZWhl7sSk2GmBME5lK,inactive

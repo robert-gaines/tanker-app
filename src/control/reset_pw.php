@@ -4,7 +4,7 @@
 
   function CheckUsername($conn,$username)
   {
-    $query    = "SELECT * FROM users WHERE USER_NAME='{$username}';";
+    $query    = "SELECT * FROM USERS WHERE USER_NAME='{$username}';";
     $tx_query = mysqli_query($conn,$query);
     if(mysqli_num_rows($tx_query) == 1)
     {
@@ -70,7 +70,7 @@
       $user_name        = $_POST['username'];
       $user_pass        = password_hash($user_pass, PASSWORD_BCRYPT);
 
-      $change_pw_query    = "UPDATE users SET USER_PASS='{$user_pass}' WHERE USER_NAME='{$user_name}';";
+      $change_pw_query    = "UPDATE USERS SET USER_PASS='{$user_pass}' WHERE USER_NAME='{$user_name}';";
       $tx_change_pw_query = mysqli_query($conn,$change_pw_query);
 
       if($tx_change_pw_query)

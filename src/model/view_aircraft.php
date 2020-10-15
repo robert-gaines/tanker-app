@@ -53,7 +53,7 @@
 <body>
 
 <?php
-  $acft_query = "SELECT * FROM acft_data";
+  $acft_query = "SELECT * FROM ACFT_DATA";
   $tx_acft_query = mysqli_query($conn,$acft_query);
  ?>
 

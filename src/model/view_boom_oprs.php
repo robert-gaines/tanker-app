@@ -50,7 +50,7 @@
 <body>
 
 <?php
-  $user_query = "SELECT * FROM users WHERE IS_BOOM='boom';";
+  $user_query = "SELECT * FROM USERS WHERE IS_BOOM='boom';";
   $tx_boom_query = mysqli_query($conn,$user_query);
  ?>
 

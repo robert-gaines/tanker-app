@@ -46,17 +46,17 @@
   <?php include('../../db/dbconnect.php'); ?>
   <?php include('../view/admin-navbar.php'); ?>
   <?php
-      $ac_query             = "SELECT * FROM acft_data";
+      $ac_query             = "SELECT * FROM ACFT_DATA";
       $tx_ac_query          = mysqli_query($conn,$ac_query);
-      $mission_query        = "SELECT * FROM mission_data";
+      $mission_query        = "SELECT * FROM MISSION_DATA";
       $tx_mission_query     = mysqli_query($conn,$mission_query);
-      $transaction_query    = "SELECT * FROM transactions";
+      $transaction_query    = "SELECT * FROM TRANSACTIONS";
       $tx_transaction_query = mysqli_query($conn,$transaction_query);
-      $user_query           = "SELECT * FROM users";
+      $user_query           = "SELECT * FROM USERS";
       $tx_user_query        = mysqli_query($conn,$user_query);
-      $boom_query           = "SELECT * FROM users WHERE IS_BOOM='boom' ";
+      $boom_query           = "SELECT * FROM USERS WHERE IS_BOOM='boom' ";
       $tx_boom_query        = mysqli_query($conn,$boom_query);
-      $wrdco_query          = "SELECT * FROM wrdco";
+      $wrdco_query          = "SELECT * FROM WRDCO";
       $tx_wrdco_query       = mysqli_query($conn,$wrdco_query);
    ?>
 <form class="" action="process_action.php" method="post" onSubmit="return confirm('Are you sure you want to proceed?')">

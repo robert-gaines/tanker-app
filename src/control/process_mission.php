@@ -86,7 +86,7 @@
   }
   /* Submit Mission Data */
 
-  $mission_data_query = "INSERT INTO mission_data (MISSION_NUMBER, TAIL_NUMBER, UNIT, HOME_STATION, COMMAND, BOOM_OPERATOR, TRANSACTION_DATE, JULIAN_DATE, FUEL_TYPE)";
+  $mission_data_query = "INSERT INTO MISSION_DATA (MISSION_NUMBER, TAIL_NUMBER, UNIT, HOME_STATION, COMMAND, BOOM_OPERATOR, TRANSACTION_DATE, JULIAN_DATE, FUEL_TYPE)";
   $mission_data_query .= "VALUES ('{$mission_number}','{$host_tail}','{$host_unit}','{$host_station}','{$host_command}','{$boom_operator}','{$transaction_date}','{$julian_date}','{$fuel_type}');";
   $tx_mission_date = mysqli_query($conn,$mission_data_query);
 
@@ -103,8 +103,8 @@
       $single_transaction = implode($entry,',');
       list($jettison,$branch,$tail_number,$acft_type,$unit,$dodaac,$command,$callsign,$pounds,$gallons,$country)=explode(',',$single_transaction);
       //
-      $insert_query = "INSERT INTO transactions (TRANSACTION_ID,MISSION_NUMBER,JETTISON,TAIL_NUMBER,BRANCH,ACFT_TYPE,UNIT,DODAAC,COMMAND,CALLSIGN,POUNDS_DELIVERED,TOTAL_GALLONS,FMS_COUNTRY)";
-      $insert_query .= "VALUES ('','{$mission_number}','{$jettison}','{$tail_number}','{$branch}','{$acft_type}','{$unit}','{$dodaac}','{$command}','{$callsign}','{$pounds}','{$gallons}','{$country}');";
+      $insert_query = "INSERT INTO TRANSACTIONS (TRANSACTION_ID,MISSION_NUMBER,JETTISON,TAIL_NUMBER,BRANCH,ACFT_TYPE,UNIT,DODAAC,COMMAND,CALLSIGN,POUNDS_DELIVERED,TOTAL_GALLONS,FMS_COUNTRY)";
+      $insert_query .= "VALUES (DEFAULT,'{$mission_number}','{$jettison}','{$tail_number}','{$branch}','{$acft_type}','{$unit}','{$dodaac}','{$command}','{$callsign}','{$pounds}','{$gallons}','{$country}');";
       //
       $tx_transaction = mysqli_query($conn,$insert_query);
     }

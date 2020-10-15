@@ -50,7 +50,7 @@
 <body>
 
 <?php
-  $user_query = "SELECT * FROM users";
+  $user_query = "SELECT * FROM USERS";
   $tx_user_query = mysqli_query($conn,$user_query);
  ?>
 

@@ -5,10 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Mission Entry</title>
-  <link rel="stylesheet" href="../../style/bootstrap/dist/css/bootstrap.css">
-  <script src="../../style/bootstrap/dist/js/bootstrap.js"></script>
-  <link rel="stylesheet" href="../../style/custom/custom.css">
-  <link rel="stylesheet" href="../../style/custom/dynamic_form.css">
+  <link rel="stylesheet" href="../style/bootstrap/dist/css/bootstrap.css">
+  <script src="../style/bootstrap/dist/js/bootstrap.js"></script>
+  <link rel="stylesheet" href="../style/custom/custom.css">
+  <link rel="stylesheet" href="../style/custom/dynamic_form.css">
   <?php session_start() ?>
   <?php include('session_checker.php'); ?>
   <?php error_reporting(0);                   ?>
@@ -52,6 +52,7 @@
     padding-left: 10px;
     padding-bottom: 10px;
     margin-top: 50px;
+    background-color:lightgray;
   }
 
   .form-title
@@ -111,24 +112,24 @@
     foreign
     -->
 <?php
-  $tail_number_query = "SELECT DISTINCT TAILNUMBER FROM acft_data ORDER BY TAILNUMBER ASC";
+  $tail_number_query = "SELECT DISTINCT TAILNUMBER FROM ACFT_DATA ORDER BY TAILNUMBER ASC";
   $tx_tn_query = mysqli_query($conn,$tail_number_query);
-  $unit_query = "SELECT DISTINCT UNIT FROM acft_data";
+  $unit_query = "SELECT DISTINCT UNIT FROM ACFT_DATA";
   $tx_unit_query = mysqli_query($conn,$unit_query);
-  $location_query = "SELECT DISTINCT LOCATION FROM acft_data";
+  $location_query = "SELECT DISTINCT LOCATION FROM ACFT_DATA";
   $tx_location_query = mysqli_query($conn,$location_query);
-  $cmd_query = "SELECT DISTINCT CMD FROM acft_data";
+  $cmd_query = "SELECT DISTINCT CMD FROM ACFT_DATA";
   $tx_cmd_query = mysqli_query($conn,$cmd_query);
  ?>
 
  <?php
-   $user_query = "SELECT USER_FIRST,USER_LAST FROM users WHERE IS_BOOM='boom';";
+   $user_query = "SELECT USER_FIRST,USER_LAST FROM USERS WHERE IS_BOOM='boom';";
    $tx_boom_query = mysqli_query($conn,$user_query);
   ?>
 
   <?php
 
-    $tn_second_query = "SELECT TAILNUMBER,ACFT_TYPE,UNIT,DODAAC,LOCATION FROM acft_data;";
+    $tn_second_query = "SELECT TAILNUMBER,ACFT_TYPE,UNIT,DODAAC,LOCATION FROM ACFT_DATA;";
     $tx_second_query = mysqli_query($conn,$tn_second_query);
 
    ?>
@@ -340,9 +341,9 @@
 <script>
 <?php
 
-  $alt_tail_number_query = "SELECT DISTINCT TAILNUMBER FROM acft_data ORDER BY TAILNUMBER ASC";
+  $alt_tail_number_query = "SELECT DISTINCT TAILNUMBER FROM ACFT_DATA ORDER BY TAILNUMBER ASC";
   $tx_alt_tn_query = mysqli_query($conn,$tail_number_query);
-  $alt_unit_query = "SELECT DISTINCT UNIT FROM acft_data";
+  $alt_unit_query = "SELECT DISTINCT UNIT FROM ACFT_DATA";
   $tx_alt_unit_query = mysqli_query($conn,$alt_unit_query);
 
  ?>

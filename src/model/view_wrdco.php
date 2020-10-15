@@ -54,7 +54,7 @@
 <body>
 
 <?php
-  $wrdco_query = "SELECT * FROM wrdco";
+  $wrdco_query = "SELECT * FROM WRDCO";
   $tx_wrdco_query = mysqli_query($conn,$wrdco_query);
  ?>
 

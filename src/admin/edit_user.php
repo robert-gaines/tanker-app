@@ -15,7 +15,7 @@
   <?php
 
     $user_id  = $_SESSION['user_id'];
-    $query    = "SELECT * FROM users WHERE USER_ID={$user_id}";
+    $query    = "SELECT * FROM USERS WHERE USER_ID={$user_id}";
     $tx_query = mysqli_query($conn,$query);
 
     while($row = mysqli_fetch_assoc($tx_query))

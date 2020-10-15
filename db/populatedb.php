@@ -80,14 +80,16 @@
       return $arr2;
     }
 
-    //include_once('../xlsx/simplexlsx/src/SimpleXLSX.php');
+    include('../xlsx/simplexlsx/src/SimpleXLSX.php');
     include('dbconnect.php');
+
     /* Attempt to import and parse the workbook */
+
     function PopulateAircraft($conn)
     {
       $xlsx = SimpleXLSX::parse('../raw/acft.xlsx');
 
-      $sheetCount = count($xlsx->sheetNames);
+      $sheetCount = count($xlsx->sheetNames());
 
       for($i = 0; $i < $sheetCount; $i++)
       {
@@ -162,7 +164,7 @@
                                                        CMD,
                                                        DODAAC,
                                                        LOCATION)
-                                              VALUES ('',
+                                              VALUES (DEFAULT,
                                                 '{$ac_country}',
                                                 '{$ac_type}',
                                                 '{$ac_tail}',
@@ -171,13 +173,12 @@
                                                 '{$ac_dodaac}',
                                                 '{$ac_location}');";
               /* Send the Query */
-              $tx_query = mysqli_query($conn,$insert_query);
-            }
+              $tx_query = mysqli_query($conn,$insert_query);            }
           }
         }
       }
 
-    function PopulateWRDCCO($conn)
+    function PopulateWRDCO($conn)
     {
       $wxlsx = SimpleXLSX::parse('../raw/wrdco.xlsx');
       $selection = $wxlsx->rows();
@@ -212,7 +213,7 @@
             -> COMMERCIAL
             -> EMAIL
         */
-        $insert_query = "INSERT INTO wrdco ( WRDCO_ID,
+        $insert_query = "INSERT INTO WRDCO ( WRDCO_ID,
                                                  CUST_DODAAC,
                                                  EBS_DODAAC,
                                                  MDS,
@@ -225,7 +226,7 @@
                                                  DSN,
                                                  COMMERCIAL,
                                                  EMAIL)
-                                        VALUES ('',
+                                        VALUES (DEFAULT,
                                           '{$customer_dodaac}',
                                           '{$ebs_dodaac}',
                                           '{$mds}',
@@ -236,11 +237,14 @@
                                           '{$firstname}',
                                           '{$rank}',
                                           '{$dsn}',
-                                          '{$commercial}');";
+                                          '{$commercial}',
+					  '{$email}');";
           /* Send the Query */
-          $tx_query = mysqli_query($conn,$insert_query);
+          $tx_query = mysqli_query($conn,$insert_query);   
       }
-
     }
+
+    PopulateAircraft($conn);
+    PopulateWRDCO($conn);
 
  ?>
