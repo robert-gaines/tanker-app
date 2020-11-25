@@ -4,7 +4,7 @@
 
   $host = "127.0.0.1";
   $user = "phpmyadmin";
-  $pass = "P@ssw0rd!P@ssw0rd!";
+  $pass = "<password>";
   $db   = "tanker_app";
 
   $conn = mysqli_connect($host,$user,$pass,$db);
