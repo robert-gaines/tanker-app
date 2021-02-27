@@ -270,7 +270,7 @@
   $mail->Port = 587;
   $mail->SMTPAuth = true;
   $mail->Username = 'tode.mailer@gmail.com';
-  $mail->Password = 'YkUB7a8Tfzj9AJ4';
+  $mail->Password = '<account password>';
   $mail->SMTPSecure = 'tls';
   $mail->From = 'tode.mailer@gmail.com';
   $mail->FromName = 'TODE Appllication Mailer';
