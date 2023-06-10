@@ -12,3 +12,11 @@ Administrator Portal
 User Management Dialogue
 
 ![UserManagement](https://github.com/robert-gaines/Tanker-App/assets/24815431/630f27a5-c342-473a-9955-9940c302d369)
+
+Mission Data Entry
+
+![SubmitMissionData](https://github.com/robert-gaines/Tanker-App/assets/24815431/f80f08cc-88cd-4ff5-afb9-38b1881b8882)
+
+Programmatically generated DD FOrm 791
+
+![DD791-PDF](https://github.com/robert-gaines/Tanker-App/assets/24815431/585c4484-101b-460f-b0b3-56e9b27aff18)
